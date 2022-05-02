@@ -1,19 +1,14 @@
 class Path {
-
    constructor(points = {}) {
-
       this.start = points.start || {
          x: 0,
          y: 0
       };
-
       this.end = points.end || {
          x: 0,
          y: 0
       };
-
       this.allowed = false;
-
    }
 }
 /**
