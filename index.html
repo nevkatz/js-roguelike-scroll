@@ -1,0 +1,35 @@
+<!doctype html>
+<html lang="en" >
+<head>
+  <meta charset="UTF-8">
+  <title>Roguelike Phases</title>
+<link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+<h1>Roguelike with Sequential Rooms</h1>
+<div id="container">
+  <p><a href="project/index.html">Project</a></p>
+</div>
+</body>
+<script>
+  let el = document.querySelector('#container');
+  let d = document.createDocumentFragment();
+
+
+  const addItem = (num)=> {
+    let p = document.createElement('p');
+    let a = document.createElement('a');
+
+    let dir = `phase-${num}-solution`;
+    a.href = `${dir}/index.html`;
+    a.innerHTML = `Phase ${num} Solution`;
+    p.appendChild(a);
+    d.appendChild(p);
+  };
+  let numPhases = 5;
+  for (var i = 1; i <= numPhases; ++i) {
+      addItem(i);
+  }
+  el.appendChild(d);
+</script>
+</html>
