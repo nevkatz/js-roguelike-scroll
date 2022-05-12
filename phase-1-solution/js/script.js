@@ -220,7 +220,6 @@ function startGame() {
      updateStats();
      drawMap(0, 0, COLS, ROWS);
      //labelRooms();
-     console.log('enemies: '+ game.enemies.length);
   }
 }
 function labelRooms() {
@@ -401,7 +400,6 @@ function generateMapTunnels() {
    // and the total number of penalties made
    game.resetMap();
 
-
    let pos = {
       x: COLS / 2,
       y: ROWS / 2
@@ -489,12 +487,7 @@ function placeItem(coords,tileCode) {
    }
 }
 
-/**
- * 
- * @TODO: Update so it's pure javaScript
- * use an array for the first three
- * use standalone functions for the others
- */
+
 function updateStats() {
 
    let player_props = ['xp', 'level', 'health','relics'];
@@ -657,12 +650,7 @@ function drawObject(x, y, color) {
 }
 
 
-// key down events
-/**
- * 
- * @TODO: Lose the jQuery
- * https://stackoverflow.com/questions/26131686/trigger-keyboard-event-in-vanilla-javascript
- */
+
 function addKeyboardListener() {
    document.addEventListener('keydown', function(e) {
       var x = player.coords.x;
@@ -716,7 +704,10 @@ function addKeyboardListener() {
             const maxValue = 10;
             player.xp += Math.round(Math.random()*maxValue);
             removeObjFromMap(x,y);
-            checkForWin();
+            /**
+             * @LATER: Check for a win
+             */ 
+          
          }
          // update player position
          updatePlayerPosition(player.coords.x, player.coords.y, x, y);
@@ -796,7 +787,7 @@ function checkForWin() {
 function checkForWin() {
 
    if (game.enemies.length == 0 && 
-      game.tileCount(RELIC_CODE)==0) {
+      game.itemsLeft(RELIC_CODE)==0) {
       userWins();
    }
 }*/

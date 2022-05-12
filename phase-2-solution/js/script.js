@@ -792,7 +792,7 @@ function checkForWin() {
 function checkForWin() {
 
    if (game.enemies.length == 0 && 
-      game.tileCount(RELIC_CODE)==0) {
+      game.itemsLeft(RELIC_CODE)==0) {
       userWins();
    }
 }*/

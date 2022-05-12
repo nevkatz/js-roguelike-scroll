@@ -71,7 +71,7 @@ Game.prototype.roomToMap = function(room) {
       }
    }
 }
-Game.prototype.tileCount = function(tileCode) {
+Game.prototype.itemsLeft = function(tileCode) {
    let count = 0;
    for (var room of game.rooms) {
     count += room.tileCount(tileCode);

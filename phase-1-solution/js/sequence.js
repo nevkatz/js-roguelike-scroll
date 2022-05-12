@@ -109,13 +109,12 @@ function buildSequence (baseRoom) {
 
         let newRoom = addAdjacentRoom(baseRoom);
 
-         if (!newRoom) {
+        if (!newRoom) {
 
           placeRelic(baseRoom);
           break;
         }
         // new
-        let min = 3;
         baseRoom.directConnect(newRoom);
 
         // new

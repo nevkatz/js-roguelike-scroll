@@ -604,5 +604,4 @@ Room.prototype.selectFreeCoords = function() {
    let idx = Math.floor(Math.random()*validCoordSets.length);
 
    return validCoordSets.length > 0 ? validCoordSets[idx] : null;
-
 }

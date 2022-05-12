@@ -572,19 +572,11 @@ Room.prototype.nearestNeighbor = function(rooms) {
    return success;
 }
 /**
- * Methods for placing items on a per-room basis
+ * @TODO: Write a methodfor counting items on a per-room basis
  */ 
 Room.prototype.tileCount = function(tileCode) {
 
-   let count = 0;
-   for (let y = this.start.y; y <= this.end.y; ++y) {
-      for (let x = this.start.x; x <= this.end.x; ++x) {
-         if (game.map[y][x]==tileCode) {
-            count++;
-         }
-      }
-   }
-   return count;
+
 }
 /**
  * @TODO: Write a method that counts the number of tiles of a particular type in a room.

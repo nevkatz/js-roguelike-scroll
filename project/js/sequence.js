@@ -104,7 +104,6 @@ function addCenterRoom() {
 function buildSequence(baseRoom) {
     /**
      * @TODO: Add a placeRelic helper that does the following: 
-     * 
      * a) checks to make sure a relic has not been added
      * b) if not, calls the current room's selectFreeCoords method
      * c) places a relic at these coords by calling placeItem
@@ -119,8 +118,7 @@ function buildSequence(baseRoom) {
            */ 
           break;
         }
-        // new
-        let min = 3;
+
         baseRoom.directConnect(newRoom);
 
         /**
@@ -138,7 +136,6 @@ function sequentialRooms() {
    let baseRoom = addCenterRoom();
 
    // room sequence
-
    const minTotalRooms = 20;
    const maxTries = 100;
    let tries = 0;
@@ -154,10 +151,6 @@ function sequentialRooms() {
 
    drawMap(0, 0, COLS, ROWS);
 
-
    return true;
 
 }
-/***
- * @TODO: Add a relic at the end of each passageway
- */
