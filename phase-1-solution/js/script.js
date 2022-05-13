@@ -704,9 +704,7 @@ function addKeyboardListener() {
             const maxValue = 10;
             player.xp += Math.round(Math.random()*maxValue);
             removeObjFromMap(x,y);
-            /**
-             * @LATER: Check for a win
-             */ 
+            checkForWin();
           
          }
          // update player position
@@ -779,7 +777,9 @@ function enemyDefeated(enemy) {
   
 }
 function checkForWin() {
-   if (game.enemies.length == 0) {
+
+   if (game.enemies.length == 0 && 
+      game.itemsLeft(RELIC_CODE)==0) {
       userWins();
    }
 }

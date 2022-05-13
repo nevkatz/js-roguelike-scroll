@@ -783,19 +783,15 @@ function enemyDefeated(enemy) {
    // if no enemies, user wins
   
 }
-function checkForWin() {
-   if (game.enemies.length == 0) {
-      userWins();
-   }
-}
-/*
+
+
 function checkForWin() {
 
    if (game.enemies.length == 0 && 
       game.itemsLeft(RELIC_CODE)==0) {
       userWins();
    }
-}*/
+}
 
 
 

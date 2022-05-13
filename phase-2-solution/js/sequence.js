@@ -114,7 +114,7 @@ function buildSequence(baseRoom) {
      for (var i = 0; i < maxSeqLen; ++i) {
 
         let newRoom = addAdjacentRoom(baseRoom);
-         if (!newRoom) {
+        if (!newRoom) {
             // we can't keep getting the root room of the sequence.
             if (roomSequence.length > 1) {
               placeRelic(baseRoom);
