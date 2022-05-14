@@ -14,9 +14,6 @@ class Game {
       this.curRoomId = 0;
 
       this.map = [];
-      this.shadow = [];
-
-      this.isShadowToggled = false;
 
       this.enemies = [];
       this.canvas = null;
