@@ -1,10 +1,4 @@
-/**
- * 
- * The solution 1 tasks are outlined as @TODO items.
- * 
- * For solution 2, check out the phase-2-solution directory 
- * and the upcoming tutorial.
- */ 
+
 function addAdjacentRoom(room) {
 
   let { width, height } = genDim();
@@ -16,10 +10,10 @@ function addAdjacentRoom(room) {
       return Math.ceil(newSize/2)+Math.ceil(roomSize/2) + passageLength; 
   }  
   const withinLimits = (room)=> {
-     return room.start.x >= OUTER_LIMIT &&
-            room.start.y >= OUTER_LIMIT &&
-            room.end.x <= COLS - OUTER_LIMIT &&
-            room.end.y <= ROWS - OUTER_LIMIT;
+   return room.start.x >= OUTER_LIMIT &&
+          room.start.y >= OUTER_LIMIT &&
+          room.end.x <= COLS - OUTER_LIMIT &&
+          room.end.y <= ROWS - OUTER_LIMIT;
   }
   const overlapsAny = (myRoom) => {
      for (var gameRoom of game.rooms) {
@@ -54,28 +48,28 @@ function addAdjacentRoom(room) {
     }
   ];
   } 
+
+
+
   let possibleRooms = [];
 
   const maxDiff = 3;
-
   for (var diff = -1*maxDiff; diff <= maxDiff; ++diff) {
-
    for (let center of possibleCenters(diff)) {
-
      let r = generateRoom(center, width, height);
 
      if (withinLimits(r) && !overlapsAny(r)) {
-
        possibleRooms.push(r);
-
      }
-   }
-  }
+   } // end possibleCenters loop
+  } // end range loop
+
   let newRoom = null;
 
   if (possibleRooms.length > 0) {
      let idx = Math.floor(Math.random()*possibleRooms.length);
      newRoom = possibleRooms[idx];
+
      game.curRoomId++;
 
      game.roomToMap(newRoom);
@@ -83,7 +77,6 @@ function addAdjacentRoom(room) {
   }
   return newRoom;
 }
-
 function addCenterRoom() {
     // central room
    const center = {
@@ -102,55 +95,86 @@ function addCenterRoom() {
    return room;
 }
 function buildSequence(baseRoom) {
-    /**
-     * @TODO: Add a placeRelic helper that does the following: 
-     * a) checks to make sure a relic has not been added
-     * b) if not, calls the current room's selectFreeCoords method
-     * c) places a relic at these coords by calling placeItem
-     */ 
-    const maxSeqLen = 10;
 
-    for (var i = 0; i < maxSeqLen; ++i) {
-        let newRoom = addAdjacentRoom(baseRoom);
-        if (!newRoom) {
-          /**
-           * @TODO: call placeRelic here
-           */ 
-          break;
+   // let's write a convenient function for placing relics.
+   const placeRelic = (room) => {
+      if (baseRoom.tileCount(RELIC_CODE) == 0) {
+
+        let coords = room.selectFreeCoords();
+
+        if (coords) { 
+           placeItem(coords, RELIC_CODE); 
         }
 
+      }
+   }
+   const maxSeqLen = 8;
+
+    roomSequence = [];
+     for (var i = 0; i < maxSeqLen; ++i) {
+
+        let newRoom = addAdjacentRoom(baseRoom);
+        if (!newRoom) {
+            // we can't keep getting the root room of the sequence.
+            if (roomSequence.length > 1) {
+              placeRelic(baseRoom);
+            }
+            // ending the loop here....
+          break;
+        }
         baseRoom.directConnect(newRoom);
-
-        /**
-         * @TODO: Place a relic if this is the last room in the sequence.
-         */ 
+        if (i == maxSeqLen -1) {
+            placeRelic(newRoom);
+        }
+        // NEW: adds a room to the sequence.
+        roomSequence.push(newRoom);
+       
         baseRoom = newRoom;
-    }
+     } // end for loop
 
-    return 0;
+    // NEW: return the room sequence.
+    return roomSequence;
 }
+// new function that places relics at the end of each sequence.
 function sequentialRooms() {
    game.resetMap();
 
-   // central room
    let baseRoom = addCenterRoom();
+   // NEW: start a room sequence
+   let roomSequence = [baseRoom];
 
-   // room sequence
-   const minTotalRooms = 20;
+   // NEW: create the array of sequences so we can be conscious of which one.
+   // this is effectively a 2D array of rooms.
+   // include diagram
+   let sequences = [roomSequence];
+
+   const minTotalRooms = 24;
    const maxTries = 100;
    let tries = 0;
 
+   // iterate through the length of the sequence
    while (game.rooms.length < minTotalRooms && tries < maxTries) {
-     
-     let idx = Math.floor(Math.random()*game.rooms.length);
-     baseRoom = game.rooms[idx];
 
-     buildSequence(baseRoom);
+    // NEW: get a sequence index and choose a sequence
+    let seqIdx= Math.floor(Math.random()*sequences.length);
+    roomSequence = sequences[seqIdx];
+
+    // NEW: choose a room from this very sequence
+    let roomIdx = Math.floor(Math.random()*(roomSequence.length-1));
+
+    // use that as your paseRoom
+    baseRoom = roomSequence[roomIdx];
+
+    // NEW: Capture the return value
+    roomSequence = buildSequence(baseRoom);
+
+     if (roomSequence.length > 0) { 
+      // NEW: if we have a sequence, add it to the array.
+      sequences.push(roomSequence); 
+     }
      tries++;
    }
-
    drawMap(0, 0, COLS, ROWS);
-
    return true;
 
 }

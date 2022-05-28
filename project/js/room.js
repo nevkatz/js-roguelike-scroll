@@ -572,21 +572,37 @@ Room.prototype.nearestNeighbor = function(rooms) {
    return success;
 }
 /**
- * @TODO: Write a methodfor counting items on a per-room basis
+ * Methods for placing items on a per-room basis
  */ 
 Room.prototype.tileCount = function(tileCode) {
 
-
+   let count = 0;
+   for (let y = this.start.y; y <= this.end.y; ++y) {
+      for (let x = this.start.x; x <= this.end.x; ++x) {
+         if (game.map[y][x]==tileCode) {
+            count++;
+         }
+      }
+   }
+   return count;
 }
-/**
- * @TODO: Write a method that counts the number of tiles of a particular type in a room.
- *  This will help us determine two things: 
- *  a) if a relic is already in a room before adding a second one
- *  b) if all relics have been collected, which will be a requirement of 
- *     beating the level.
- */ 
 Room.prototype.selectFreeCoords = function() {
 
-   
+   let validCoordSets = [];
+
+   const valid = (x,y) => game.map[y][x] == FLOOR_CODE;
+
+   for (let y = this.start.y; y < this.end.y; ++y) {
+
+     for (let x = this.start.x; x < this.end.x; ++x) {
+
+        if (valid(x,y)) {
+           validCoordSets.push({x,y})
+        }
+     }
+   }
+   let idx = Math.floor(Math.random()*validCoordSets.length);
+
+   return validCoordSets.length > 0 ? validCoordSets[idx] : null;
 
 }

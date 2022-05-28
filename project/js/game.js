@@ -8,12 +8,16 @@
  * @property {HTMLElement} canvas - the DOM element
  * @property {Object} context - the bundle of drawing methods tied to the canvas
  */
+
 class Game {
    constructor() {
       this.rooms = [];
       this.curRoomId = 0;
 
       this.map = [];
+      this.shadow = [];
+
+      this.isShadowToggled = false;
 
       this.enemies = [];
       this.canvas = null;
@@ -60,7 +64,6 @@ Game.prototype.resetMap = function() {
    }
 }
 Game.prototype.roomToMap = function(room) {
-
    for (var y = room.start.y; y <= room.end.y; ++y) {
       for (var x = room.start.x; x <= room.end.x; ++x) {
 
@@ -68,12 +71,12 @@ Game.prototype.roomToMap = function(room) {
       }
    }
 }
-/**
- * @TODO: Write a method that counts the number of tiles of a particular type
- * on the game map. This will help us determine if all relics have been collected.
- */ 
 Game.prototype.tileCount = function(tileCode) {
-
+   let count = 0;
+   for (var room of game.rooms) {
+    count += room.tileCount(tileCode);
+   }
+   return count;
 }
 
 
