@@ -706,7 +706,6 @@ function addKeyboardListener() {
     
             break;
          case 39: // right
-
             x++;
             if (abs_pos.x > (COLS + STATIC_DIM.x)/2) {
                console.log('subtracting offset x');
@@ -774,8 +773,14 @@ function addKeyboardListener() {
          let right = x + VISIBILITY + 2;
          let bot = y + VISIBILITY + 2;
 
-         drawMap(0, 0, COLS, ROWS);
-         //drawMap(left, top, right, bot);
+         if (offset.x != 0 || offset.y != 0) {
+           drawMap(0, 0, COLS, ROWS);
+         }
+         else {
+           drawMap(left, top, right, bot);
+         }
+ 
+   
       }
       e.preventDefault(); // prevent the default action (scroll / move caret)
    });
