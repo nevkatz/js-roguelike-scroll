@@ -24,7 +24,6 @@ class Game {
 
       this.context = null;
 
-      // new
       this.offset = {
          x:0,
          y:0

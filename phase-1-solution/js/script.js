@@ -7,6 +7,15 @@ const COLS = 80;
 const ROWS = 60;
 const TILE_DIM = 10;
 
+const STATIC_DIM = {
+   x:20,
+   y:20
+}
+/**
+ * If abs player position.y is > 10 cols or < 70 rows 
+ * If abs.player position.x is > 10 cols or < 50 rows
+ * 
+ */ 
 const DEBUG = true;
 
 const OUTER_LIMIT = 3;
@@ -670,23 +679,50 @@ function addKeyboardListener() {
       let offset = {
          x:0,
          y:0
-      }
+      };
+      let abs_pos = {
+         x:x + game.offset.x,
+         y:y + game.offset.y
+      };
+      console.log('abs position');
+      console.log(abs_pos);
+      console.log('limit: ' + (COLS + STATIC_DIM.x)/2);
+
       switch (e.which) {
          case 37: // left
             x--;
-            offset.x = 1;
+            if (abs_pos.x < (COLS - STATIC_DIM.x)/2) {
+               offset.x = 1;
+            }
+
+         
             break;
          case 38: // up
             y--;
-            offset.y = 1;
+
+            if (abs_pos.y < (ROWS - STATIC_DIM.y)/2) {
+               offset.y = 1;
+            }
+    
             break;
          case 39: // right
+
             x++;
-            offset.x = -1;
+            if (abs_pos.x > (COLS + STATIC_DIM.x)/2) {
+               console.log('subtracting offset x');
+               offset.x = -1;
+               console.log('offset x: ' + game.offset.x);
+            }
+            else {
+
+            }
             break;
          case 40: // down
-            offset.y = -1;
+       
             y++;
+            if (abs_pos.y > (ROWS + STATIC_DIM.y)/2) {
+               offset.y = -1; 
+            }
             break;
          default:
             return; // exit this handler for other keys
