@@ -496,13 +496,16 @@ function placeItem(coords,tileCode) {
  */
 function updateStats() {
 
-   let player_props = ['xp', 'level', 'health','relics'];
+   let player_props = ['xp', 'level', 'health'];
 
    for (var prop of player_props) {
       let el = document.getElementById(prop);
 
       el.textContent = player[prop];
    }
+   let el = document.getElementById('relics');
+
+   el.textContent = `${player.relics}/${game.relics}`;
 
    let weapon_props = [{
          domId: 'weapon',

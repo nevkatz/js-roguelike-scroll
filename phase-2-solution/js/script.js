@@ -507,13 +507,16 @@ function placeItem(coords,tileCode) {
  */
 function updateStats() {
 
-   let player_props = ['xp', 'level', 'health','relics'];
+   let player_props = ['xp', 'level', 'health'];
 
    for (var prop of player_props) {
       let el = document.getElementById(prop);
 
       el.textContent = player[prop];
    }
+   let el = document.getElementById('relics');
+
+   el.textContent = `${player.relics}/${game.relics}`;
 
    let weapon_props = [{
          domId: 'weapon',
@@ -629,12 +632,12 @@ function generateEnemies(amount) {
 
 function generatePlayer() {
 
-   let coords = generateValidCoords();
 
-  /* let coords = {
+
+  let coords = {
       x: COLS / 2,
       y: ROWS / 2
-   };*/
+   };
 
    // level, health, weapon, coords, xp
    player = new Player(1, 100, WEAPONS[0], coords, 30, 0);
