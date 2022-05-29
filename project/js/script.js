@@ -487,7 +487,6 @@ function placeItem(coords,tileCode) {
          drawObject(coords.x, coords.y, color);
    }
 }
-
 /**
  * 
  * @TODO: Update so it's pure javaScript
