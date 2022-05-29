@@ -20,9 +20,7 @@ const STATIC_DIM = {
  * 
  */ 
 const DEBUG = true;
-
 const OUTER_LIMIT = 3;
-
 const SHADOW_CODE = 0;
 const VISIBLE_CODE = 1;
 

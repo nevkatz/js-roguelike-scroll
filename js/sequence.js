@@ -103,7 +103,7 @@ function buildSequence(baseRoom) {
         let coords = room.selectFreeCoords();
 
         if (coords) { 
-           placeItem(coords, RELIC_CODE); 
+           addObjToMap(coords, RELIC_CODE); 
            game.relics++;
         }
 
