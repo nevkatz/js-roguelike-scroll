@@ -5,14 +5,11 @@
 // dimensions
 const COLS = 80;
 const ROWS = 60;
-
-const WIDTH = 50;
-const HEIGHT = 30;
 const TILE_DIM = 10;
 
 const STATIC_DIM = {
-   x:12,
-   y:12
+   x:20,
+   y:20
 }
 /**
  * If abs player position.y is > 10 cols or < 70 rows 
@@ -20,7 +17,9 @@ const STATIC_DIM = {
  * 
  */ 
 const DEBUG = true;
+
 const OUTER_LIMIT = 3;
+
 const SHADOW_CODE = 0;
 const VISIBLE_CODE = 1;
 
@@ -147,7 +146,7 @@ function addStat(label, container) {
    let el = document.createElement('li');
    let id = label.toLowerCase();
    let value = '0';
-   el.innerHTML = `<label>${label}</label>: <span id="${id}">${value}</span>`
+   el.innerHTML = `<label>${label}</label>: <span id="${id}" ${value}></span>`
    container.appendChild(el);
    return container;
 }
@@ -171,8 +170,10 @@ function createDOM() {
    let canvas = document.createElement('canvas');
    canvas.id = 'grid';
 
-   canvas.height = HEIGHT * TILE_DIM;
-   canvas.width = WIDTH * TILE_DIM;
+
+
+   canvas.height = ROWS * TILE_DIM;
+   canvas.width = COLS * TILE_DIM;
 
    container.appendChild(canvas);
 
@@ -229,12 +230,7 @@ function startGame() {
      generateItems(STARTING_POTIONS_AMOUNT, POTION_CODE);
      generateEnemies(TOTAL_ENEMIES);
      updateStats();
-     centerPlayer();
      drawMap(0, 0, COLS, ROWS);
-
-     if (game.offset.y != 0 || game.offset.x != 0) {
-        drawOffsetRegion();
-     }
 
   }
 }
@@ -495,10 +491,9 @@ function generateItems(quantity, tileCode) {
 function placeItem(coords,tileCode) {
    
    addObjToMap(coords, tileCode);
-   console.log('tileCode: ' + tileCode);
-   if (tileCode == PLAYER_CODE || 
-       !game.isShadowToggled ||
-        game.shadow[coords.y][coords.x] == VISIBLE_CODE) {
+
+   if (!game.isShadowToggled ||
+         game.shadow[coords.y][coords.x] == VISIBLE_CODE) {
          let color = TILE_COLORS[tileCode];
          drawObject(coords.x, coords.y, color);
    }
@@ -512,16 +507,13 @@ function placeItem(coords,tileCode) {
  */
 function updateStats() {
 
-   let player_props = ['xp', 'level', 'health'];
+   let player_props = ['xp', 'level', 'health','relics'];
 
    for (var prop of player_props) {
       let el = document.getElementById(prop);
 
       el.textContent = player[prop];
    }
-   let el = document.getElementById('relics');
-
-   el.textContent = `${player.relics}/${game.relics}`;
 
    let weapon_props = [{
          domId: 'weapon',
@@ -553,16 +545,7 @@ function updateStats() {
   
 }
 
-function centerPlayer() {
-   let { coords } = player;
 
-   game.offset.x = -1*coords.x + WIDTH/2;
-
-   game.offset.y = -1*coords.y + HEIGHT/2;
-
-   console.log(game.offset);
-
-}
 /**
  *
  * @param {Number} startX
@@ -572,7 +555,7 @@ function centerPlayer() {
  * 
  */
 function drawMap(startX, startY, endX, endY) {
-   console.log('drawing map');
+
    // loop through all cells of the map
    for (var row = startY; row < endY; row++) {
 
@@ -646,12 +629,12 @@ function generateEnemies(amount) {
 
 function generatePlayer() {
 
-   //let coords = generateValidCoords();
+   let coords = generateValidCoords();
 
-   let coords = {
+  /* let coords = {
       x: COLS / 2,
       y: ROWS / 2
-   };
+   };*/
 
    // level, health, weapon, coords, xp
    player = new Player(1, 100, WEAPONS[0], coords, 30, 0);
@@ -739,7 +722,7 @@ function addKeyboardListener() {
       switch (e.which) {
          case 37: // left
             x--;
-            if (absPos.x < (WIDTH - STATIC_DIM.x)/2) {
+            if (absPos.x < (COLS - STATIC_DIM.x)/2) {
                offset.x = 1;
             }
 
@@ -748,14 +731,14 @@ function addKeyboardListener() {
          case 38: // up
             y--;
 
-            if (absPos.y < (HEIGHT - STATIC_DIM.y)/2) {
+            if (absPos.y < (ROWS - STATIC_DIM.y)/2) {
                offset.y = 1;
             }
     
             break;
          case 39: // right
             x++;
-            if (absPos.x > (WIDTH + STATIC_DIM.x)/2) {
+            if (absPos.x > (COLS + STATIC_DIM.x)/2) {
                offset.x = -1;
             }
             else {
@@ -765,7 +748,7 @@ function addKeyboardListener() {
          case 40: // down
        
             y++;
-            if (absPos.y > (HEIGHT + STATIC_DIM.y)/2) {
+            if (absPos.y > (ROWS + STATIC_DIM.y)/2) {
                offset.y = -1; 
             }
             break;
