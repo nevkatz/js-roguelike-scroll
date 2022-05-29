@@ -6,7 +6,7 @@
 const COLS = 80;
 const ROWS = 60;
 
-const WIDTH = 40;
+const WIDTH = 50;
 const HEIGHT = 30;
 const TILE_DIM = 10;
 
@@ -175,7 +175,7 @@ function createDOM() {
 
 
 
-   canvas.height = WIDTH * TILE_DIM;
+   canvas.height = HEIGHT * TILE_DIM;
    canvas.width = WIDTH * TILE_DIM;
 
    container.appendChild(canvas);
@@ -646,12 +646,12 @@ function generateEnemies(amount) {
 
 function generatePlayer() {
 
-   let coords = generateValidCoords();
+   //let coords = generateValidCoords();
 
-  /* let coords = {
+   let coords = {
       x: COLS / 2,
       y: ROWS / 2
-   };*/
+   };
 
    // level, health, weapon, coords, xp
    player = new Player(1, 100, WEAPONS[0], coords, 30, 0);

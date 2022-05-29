@@ -34,6 +34,7 @@ h1 {
      list-style-type: none;
      display: flex;
      justify-content: center;
+     padding-left:  0px;
 }
  ul#hud li {
      margin-left: 5px;
