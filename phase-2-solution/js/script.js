@@ -11,8 +11,8 @@ const HEIGHT = 30;
 const TILE_DIM = 10;
 
 const STATIC_DIM = {
-   x:20,
-   y:20
+   x:12,
+   y:12
 }
 /**
  * If abs player position.y is > 10 cols or < 70 rows 
@@ -233,7 +233,12 @@ function startGame() {
      generateItems(STARTING_POTIONS_AMOUNT, POTION_CODE);
      generateEnemies(TOTAL_ENEMIES);
      updateStats();
+     centerPlayer();
      drawMap(0, 0, COLS, ROWS);
+
+     if (game.offset.y != 0 || game.offset.x != 0) {
+        drawOffsetRegion();
+     }
 
   }
 }
@@ -548,7 +553,16 @@ function updateStats() {
   
 }
 
+function centerPlayer() {
+   let { coords } = player;
 
+   game.offset.x = -1*coords.x + WIDTH/2;
+
+   game.offset.y = -1*coords.y + HEIGHT/2;
+
+   console.log(game.offset);
+
+}
 /**
  *
  * @param {Number} startX
@@ -558,7 +572,7 @@ function updateStats() {
  * 
  */
 function drawMap(startX, startY, endX, endY) {
-
+   console.log('drawing map');
    // loop through all cells of the map
    for (var row = startY; row < endY; row++) {
 
@@ -725,7 +739,7 @@ function addKeyboardListener() {
       switch (e.which) {
          case 37: // left
             x--;
-            if (absPos.x < (COLS - STATIC_DIM.x)/2) {
+            if (absPos.x < (WIDTH - STATIC_DIM.x)/2) {
                offset.x = 1;
             }
 
@@ -734,14 +748,14 @@ function addKeyboardListener() {
          case 38: // up
             y--;
 
-            if (absPos.y < (ROWS - STATIC_DIM.y)/2) {
+            if (absPos.y < (HEIGHT - STATIC_DIM.y)/2) {
                offset.y = 1;
             }
     
             break;
          case 39: // right
             x++;
-            if (absPos.x > (COLS + STATIC_DIM.x)/2) {
+            if (absPos.x > (WIDTH + STATIC_DIM.x)/2) {
                offset.x = -1;
             }
             else {
@@ -751,7 +765,7 @@ function addKeyboardListener() {
          case 40: // down
        
             y++;
-            if (absPos.y > (ROWS + STATIC_DIM.y)/2) {
+            if (absPos.y > (HEIGHT + STATIC_DIM.y)/2) {
                offset.y = -1; 
             }
             break;

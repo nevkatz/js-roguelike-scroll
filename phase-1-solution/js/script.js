@@ -190,6 +190,10 @@ function createDOM() {
 function toggleShadow() {
    game.isShadowToggled = !game.isShadowToggled;
    drawMap(0, 0, COLS, ROWS);
+
+   if (game.offset.y != 0 || game.offset.x != 0) {
+      drawOffsetRegion();
+   }
 }
 
 /**
@@ -227,8 +231,7 @@ function startGame() {
      generateEnemies(TOTAL_ENEMIES);
      updateStats();
      drawMap(0, 0, COLS, ROWS);
-     //labelRooms();
-     console.log('enemies: '+ game.enemies.length);
+
   }
 }
 function labelRooms() {
@@ -388,7 +391,6 @@ function generateMapRooms() {
 
      let {numConnected, numDisc} = myRoom.connectRemaining();
 
-     console.log(`Room${room.id} conected ${numConnected} out of ${numDisc} disconnected rooms`);
    }
 }
 
@@ -565,7 +567,7 @@ function drawMap(startX, startY, endX, endY) {
 
          if (game.isShadowToggled && game.shadow[row] && game.shadow[row][col] == SHADOW_CODE) {
             // simply draw black.
-            color = 'black';
+            color = '#000';
 
          } else {
             let c_idx = game.map[row][col];
@@ -627,12 +629,12 @@ function generateEnemies(amount) {
 
 function generatePlayer() {
 
-  // let coords = generateValidCoords();
+   let coords = generateValidCoords();
 
-   let coords = {
+  /* let coords = {
       x: COLS / 2,
       y: ROWS / 2
-   };
+   };*/
 
    // level, health, weapon, coords, xp
    player = new Player(1, 100, WEAPONS[0], coords, 30, 0);
@@ -646,11 +648,42 @@ function generatePlayer() {
 function addObjToMap(coords, tileCode) {
    game.map[coords.y][coords.x] = tileCode;
 }
+function drawOffsetRegion() {
+   let color = (game.isShadowToggled) ? '#000' : TILE_COLORS[0];
+   let w = Math.abs(game.offset.x), h = Math.abs(game.offset.y);
 
+   let start = {
+      x:0,
+      y:0
+   };
+   
+
+   if (game.offset.x < 0) {
+      start.x = COLS + game.offset.x
+   }
+  
+   if (game.offset.y < 0) {
+      start.y = ROWS + game.offset.y
+   }
+
+   game.context.beginPath();
+   // vert stripe
+   game.context.rect(start.x*TILE_DIM, 0, w*TILE_DIM, ROWS*TILE_DIM);
+   game.context.fill();
+   game.context.fillStyle = color;
+   game.context.beginPath();
+   // horiz stripe
+   game.context.rect(0, start.y * TILE_DIM, COLS*TILE_DIM, h*TILE_DIM);
+   game.context.fillStyle = color;
+   game.context.fill();
+
+
+}
 /**
  * @param {Number} x
  * @param {Number} y
  * @param {String} color
+ * @param {Static} flag for not using offset
  */
 function drawObject(x, y, color) {
 
@@ -680,18 +713,16 @@ function addKeyboardListener() {
          x:0,
          y:0
       };
-      let abs_pos = {
+      let absPos = {
          x:x + game.offset.x,
          y:y + game.offset.y
       };
-      console.log('abs position');
-      console.log(abs_pos);
-      console.log('limit: ' + (COLS + STATIC_DIM.x)/2);
+
 
       switch (e.which) {
          case 37: // left
             x--;
-            if (abs_pos.x < (COLS - STATIC_DIM.x)/2) {
+            if (absPos.x < (COLS - STATIC_DIM.x)/2) {
                offset.x = 1;
             }
 
@@ -700,17 +731,15 @@ function addKeyboardListener() {
          case 38: // up
             y--;
 
-            if (abs_pos.y < (ROWS - STATIC_DIM.y)/2) {
+            if (absPos.y < (ROWS - STATIC_DIM.y)/2) {
                offset.y = 1;
             }
     
             break;
          case 39: // right
             x++;
-            if (abs_pos.x > (COLS + STATIC_DIM.x)/2) {
-               console.log('subtracting offset x');
+            if (absPos.x > (COLS + STATIC_DIM.x)/2) {
                offset.x = -1;
-               console.log('offset x: ' + game.offset.x);
             }
             else {
 
@@ -719,7 +748,7 @@ function addKeyboardListener() {
          case 40: // down
        
             y++;
-            if (abs_pos.y > (ROWS + STATIC_DIM.y)/2) {
+            if (absPos.y > (ROWS + STATIC_DIM.y)/2) {
                offset.y = -1; 
             }
             break;
@@ -775,12 +804,11 @@ function addKeyboardListener() {
 
          if (offset.x != 0 || offset.y != 0) {
            drawMap(0, 0, COLS, ROWS);
+           drawOffsetRegion();
          }
          else {
            drawMap(left, top, right, bot);
          }
- 
-   
       }
       e.preventDefault(); // prevent the default action (scroll / move caret)
    });

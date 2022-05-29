@@ -39,6 +39,10 @@ Game.prototype.reset = function() {
    this.shadow = [];
    this.map = [];
    this.rooms = []
+   this.offset = {
+      x:0,
+      y:0
+   }
 }
 
 Game.prototype.inRoom = function({x,y}) {
