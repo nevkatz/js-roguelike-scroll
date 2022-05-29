@@ -149,7 +149,7 @@ function addStat(label, container) {
    let el = document.createElement('li');
    let id = label.toLowerCase();
    let value = '0';
-   el.innerHTML = `<label>${label}</label>: <span id="${id}" ${value}></span>`
+   el.innerHTML = `<label>${label}</label>: <span id="${id}">${value}</span>`
    container.appendChild(el);
    return container;
 }
@@ -172,8 +172,6 @@ function createDOM() {
    // add canvas
    let canvas = document.createElement('canvas');
    canvas.id = 'grid';
-
-
 
    canvas.height = HEIGHT * TILE_DIM;
    canvas.width = WIDTH * TILE_DIM;
@@ -499,9 +497,10 @@ function generateItems(quantity, tileCode) {
 function placeItem(coords,tileCode) {
    
    addObjToMap(coords, tileCode);
-
-   if (!game.isShadowToggled ||
-         game.shadow[coords.y][coords.x] == VISIBLE_CODE) {
+   console.log('tileCode: ' + tileCode);
+   if (tileCode == PLAYER_CODE || 
+       !game.isShadowToggled ||
+        game.shadow[coords.y][coords.x] == VISIBLE_CODE) {
          let color = TILE_COLORS[tileCode];
          drawObject(coords.x, coords.y, color);
    }
@@ -515,13 +514,16 @@ function placeItem(coords,tileCode) {
  */
 function updateStats() {
 
-   let player_props = ['xp', 'level', 'health','relics'];
+   let player_props = ['xp', 'level', 'health'];
 
    for (var prop of player_props) {
       let el = document.getElementById(prop);
 
       el.textContent = player[prop];
    }
+   let el = document.getElementById('relics');
+
+   el.textContent = `${player.relics}/${game.relics}`;
 
    let weapon_props = [{
          domId: 'weapon',

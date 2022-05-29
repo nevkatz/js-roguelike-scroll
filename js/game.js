@@ -24,6 +24,8 @@ class Game {
 
       this.context = null;
 
+      this.relics = 0;
+
       this.offset = {
          x:0,
          y:0
@@ -39,6 +41,7 @@ Game.prototype.reset = function() {
    this.shadow = [];
    this.map = [];
    this.rooms = []
+   this.relics = 0;
    this.offset = {
       x:0,
       y:0
@@ -61,14 +64,17 @@ Game.prototype.addPath = function(path) {
 Game.prototype.resetMap = function() {
 
    this.map = [];
+   this.shadow = [];
    // generate a solid wall.
    for (var row = 0; row < ROWS; row++) {
       // create row
       this.map.push([]);
+      this.shadow.push([]);
 
       for (var col = 0; col < COLS; col++) {
          // create wall
          this.map[row].push(WALL_CODE);
+         this.shadow[row].push(SHADOW_CODE);
       }
    }
 }

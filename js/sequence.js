@@ -104,6 +104,7 @@ function buildSequence(baseRoom) {
 
         if (coords) { 
            placeItem(coords, RELIC_CODE); 
+           game.relics++;
         }
 
       }
