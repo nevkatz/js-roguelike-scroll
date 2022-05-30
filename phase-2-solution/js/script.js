@@ -708,10 +708,11 @@ function drawObject(x, y, color) {
  */
 function addKeyboardListener() {
    document.addEventListener('keydown', function(e) {
-      var x = player.coords.x;
-      var y = player.coords.y;
-      var oldX = player.coords.x;
-      var oldY = player.coords.y;
+      
+      let {x, y} = player.coords;
+
+
+
       let offset = {
          x:0,
          y:0
@@ -794,23 +795,26 @@ function addKeyboardListener() {
             removeObjFromMap(x,y);
             checkForWin();
          }
+
+         let {x:oldX, y:oldY} = player.coords;
          // update player position
-         updatePlayerPosition(player.coords.x, player.coords.y, x, y);
+         updatePlayerPosition(oldX, oldY, x, y);
 
          updateStats();
 
-         let left = oldX - VISIBILITY - 1;
-         let top = oldY - VISIBILITY - 1;
-
-         let right = x + VISIBILITY + 2;
-         let bot = y + VISIBILITY + 2;
+      
 
          if (offset.x != 0 || offset.y != 0) {
            drawMap(0, 0, COLS, ROWS);
            drawOffsetRegion();
          }
          else {
-           drawMap(left, top, right, bot);
+          let left = oldX - VISIBILITY - 1;
+          let top = oldY - VISIBILITY - 1;
+
+          let right = x + VISIBILITY + 2;
+          let bot = y + VISIBILITY + 2;
+          drawMap(left, top, right, bot);
          }
       }
       e.preventDefault(); // prevent the default action (scroll / move caret)
