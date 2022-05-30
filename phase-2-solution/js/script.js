@@ -820,7 +820,19 @@ function addKeyboardListener() {
       e.preventDefault(); // prevent the default action (scroll / move caret)
    });
 }
+function checkEnemy(x,y) {
 
+    const matching_coords = (enemy) => {
+        return enemy.coords.x == x && enemy.coords.y == y;
+    }
+
+    let enemy = game.enemies.find(matching_coords);
+
+    if (enemy) {
+        fightEnemy(enemy);
+    }
+
+}
 function fightEnemy(enemy) {
    if (player.health - enemy.damage <= 0) {
       gameOver();

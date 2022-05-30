@@ -662,30 +662,17 @@ function drawObject(x, y, color) {
     game.context.fill();
 }
 
-function checkEnemy() {
 
-    const matching_coords = (enemy) => {
-        return enemy.coords.x == x && enemy.coords.y == y;
-    }
-
-    let enemy = game.enemies.find(matching_coords);
-
-    if (enemy) {
-        fightEnemy(enemy);
-    }
-
-}
 
 // key down events
 /**
- * 
- * @TODO: Lose the jQuery
  * https://stackoverflow.com/questions/26131686/trigger-keyboard-event-in-vanilla-javascript
  */
 
 function checkDirection(e) {
     // prevent the default action (scroll / move caret)
     e.preventDefault();
+
     let {x, y} = player.coords;
 
     switch (e.which) {
@@ -750,6 +737,22 @@ function movePlayer(x,y) {
     drawMap(left, top, right, bot);
 }
 
+/**
+ *  Enemy logic
+ */ 
+function checkEnemy() {
+
+    const matching_coords = (enemy) => {
+        return enemy.coords.x == x && enemy.coords.y == y;
+    }
+
+    let enemy = game.enemies.find(matching_coords);
+
+    if (enemy) {
+        fightEnemy(enemy);
+    }
+
+}
 function fightEnemy(enemy) {
     if (player.health - enemy.damage <= 0) {
         gameOver();

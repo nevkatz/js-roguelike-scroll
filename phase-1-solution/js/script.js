@@ -202,8 +202,7 @@ function init() {
     game.canvas = document.getElementById("grid");
     game.context = game.canvas.getContext("2d");
     startGame();
-    addKeyboardListener();
-
+    document.addEventListener('keydown', checkDirection);
 }
 init();
 
@@ -676,6 +675,92 @@ function drawObject(x, y, color) {
     game.context.fill();
 }
 
+function checkDirection(e) {
+    // prevent the default action (scroll / move caret)
+    e.preventDefault();
+
+    let {
+        x,
+        y
+    } = player.coords;
+
+    let offset = {
+        x: 0,
+        y: 0
+    };
+
+    switch (e.which) {
+        case 37: // left
+            x--;
+            offset.x = 1;
+            break;
+        case 38: // up
+            y--;
+            offset.y = 1;
+            break;
+        case 39: // right
+            x++;
+            offset.x = -1;
+            break;
+        case 40: // down
+            y++;
+            offset.y = -1;
+            break;
+        default:
+            return; // exit this handler for other keys
+            break;
+    }
+    if (game.map[y][x] == ENEMY_CODE) {
+
+        checkEnemy(x, y);
+
+    } else if (game.map[y][x] != WALL_CODE) {
+
+        game.offset.y += offset.y;
+        game.offset.x += offset.x;
+
+        movePlayer(x, y);
+    }
+}
+
+function movePlayer(x, y) {
+    // if next spot is potion
+    if (game.map[y][x] == POTION_CODE) {
+
+        player.health += pickRandom(POTIONS);
+
+        removeObjFromMap(x, y);
+        generateItems(1, POTION_CODE);
+        // if next spot is weapon
+    } else if (game.map[y][x] == WEAPON_CODE) {
+
+        player.weapon = pickRandom(WEAPONS);
+
+        removeObjFromMap(x, y);
+        generateItems(1, WEAPON_CODE);
+    } else if (game.map[y][x] == RELIC_CODE) {
+        player.relics++;
+        const maxValue = 10;
+        player.xp += Math.round(Math.random() * maxValue);
+        removeObjFromMap(x, y);
+        checkForWin();
+    }
+    let {
+        x: oldX,
+        y: oldY
+    } = player.coords;
+    // update player position
+    updatePlayerPosition(oldX, oldY, x, y);
+
+    updateStats();
+
+    /*let left = oldX - VISIBILITY - 1;
+    let top = oldY - VISIBILITY - 1;
+    let right = x + VISIBILITY + 2;
+    let bot = y + VISIBILITY + 2;*/
+
+    drawMap(0, 0, COLS, ROWS);
+}
 
 // key down events
 /**
@@ -683,88 +768,20 @@ function drawObject(x, y, color) {
  * @TODO: Lose the jQuery
  * https://stackoverflow.com/questions/26131686/trigger-keyboard-event-in-vanilla-javascript
  */
-function addKeyboardListener() {
-    document.addEventListener('keydown', function(e) {
 
+function checkEnemy(x,y) {
 
+    const matching_coords = (enemy) => {
+        return enemy.coords.x == x && enemy.coords.y == y;
+    }
 
+    let enemy = game.enemies.find(matching_coords);
 
-        let {x, y} = player.coords;
+    if (enemy) {
+        fightEnemy(enemy);
+    }
 
-        let offset = {
-            x: 0,
-            y: 0
-        };
-
-        switch (e.which) {
-            case 37: // left
-                x--;
-                offset.x = 1;
-                break;
-            case 38: // up
-                y--;
-                offset.y = 1;
-                break;
-            case 39: // right
-                x++;
-                offset.x = -1;
-                break;
-            case 40: // down
-                y++;
-                offset.y = -1;
-                break;
-            default:
-                return; // exit this handler for other keys
-                break;
-        }
-        // check if next spot is enemy
-        if (game.map[y][x] == ENEMY_CODE) {
-
-            const matching_coords = (enemy) => {
-                return enemy.coords.x == x && enemy.coords.y == y;
-            }
-            let enemy = game.enemies.find(matching_coords);
-
-            fightEnemy(enemy);
-        } else if (game.map[y][x] != WALL_CODE) {
-
-            game.offset.y += offset.y;
-            game.offset.x += offset.x;
-
-            // if next spot is potion
-            if (game.map[y][x] == POTION_CODE) {
-
-                player.health += pickRandom(POTIONS);
-
-                removeObjFromMap(x, y);
-                generateItems(1, POTION_CODE);
-                // if next spot is weapon
-            } else if (game.map[y][x] == WEAPON_CODE) {
-
-                player.weapon = pickRandom(WEAPONS);
-
-                removeObjFromMap(x, y);
-                generateItems(1, WEAPON_CODE);
-            } else if (game.map[y][x] == RELIC_CODE) {
-                player.relics++;
-                const maxValue = 10;
-                player.xp += Math.round(Math.random() * maxValue);
-                removeObjFromMap(x, y);
-                checkForWin();
-            }
-
-            let {x:oldX, y:oldY} = player.coords;
-            // update player position
-            updatePlayerPosition(oldX, oldY, x, y);
-
-            updateStats();
-
-            drawMap(0, 0, COLS, ROWS);
-        }
-        e.preventDefault(); // prevent the default action (scroll / move caret)
-    });
 }
-
 function fightEnemy(enemy) {
     if (player.health - enemy.damage <= 0) {
         gameOver();
