@@ -764,10 +764,8 @@ function movePlayer(x, y) {
 
 // key down events
 /**
- * 
- * @TODO: Lose the jQuery
- * https://stackoverflow.com/questions/26131686/trigger-keyboard-event-in-vanilla-javascript
- */
+ * Enemy Logic 
+ */ 
 
 function checkEnemy(x,y) {
 

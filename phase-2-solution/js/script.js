@@ -1,21 +1,21 @@
 /**
  *  Game Constants
  * 
- */ 
+ */
 // dimensions
 const COLS = 80;
 const ROWS = 60;
 const TILE_DIM = 10;
 
 const STATIC_DIM = {
-   x:20,
-   y:20
+    x: 20,
+    y: 20
 }
 /**
  * If abs player position.y is > 10 cols or < 70 rows 
  * If abs.player position.x is > 10 cols or < 50 rows
  * 
- */ 
+ */
 const DEBUG = true;
 
 const OUTER_LIMIT = 3;
@@ -49,21 +49,21 @@ const STARTING_POTIONS_AMOUNT = 10;
 const STARTING_WEAPONS_AMOUNT = 10;
 
 const TILE_COLORS = [
-   // wall
-   'grey',
-   // floor
-   'white',
-   // player
-   'blue',
-   // enemy
-   'red',
-   // health drop
-   'green',
-   // weapon
-   'orange',
+    // wall
+    'grey',
+    // floor
+    'white',
+    // player
+    'blue',
+    // enemy
+    'red',
+    // health drop
+    'green',
+    // weapon
+    'orange',
 
-   // relic
-   '#a117f2'
+    // relic
+    '#a117f2'
 ];
 
 
@@ -83,14 +83,14 @@ const TILE_COLORS = [
  * @property {relics} relics - relics collected
  */
 class Player {
-   constructor(level, health, weapon, coords, xp, relics) {
-      this.level = level;
-      this.health = health;
-      this.weapon = weapon;
-      this.coords = coords;
-      this.relics = relics;
-      this.xp = xp;
-   }
+    constructor(level, health, weapon, coords, xp, relics) {
+        this.level = level;
+        this.health = health;
+        this.weapon = weapon;
+        this.coords = coords;
+        this.relics = relics;
+        this.xp = xp;
+    }
 }
 
 /**
@@ -102,14 +102,12 @@ class Player {
  * @property {Number} damage
  */
 class Enemy {
-   constructor(health, coords, damage) {
-      this.health = health;
-      this.coords = coords;
-      this.damage = damage;
-   }
+    constructor(health, coords, damage) {
+        this.health = health;
+        this.coords = coords;
+        this.damage = damage;
+    }
 }
-
-
 
 
 
@@ -118,21 +116,21 @@ class Enemy {
  * Constants
  */
 const WEAPONS = [{
-      name: "Dagger",
-      damage: 15
-   },
-   {
-      name: "Sword",
-      damage: 30
-   },
-   {
-      name: "Hammer",
-      damage: 60
-   },
-   {
-      name: "Axe",
-      damage: 100
-   }
+        name: "Dagger",
+        damage: 15
+    },
+    {
+        name: "Sword",
+        damage: 30
+    },
+    {
+        name: "Hammer",
+        damage: 60
+    },
+    {
+        name: "Axe",
+        damage: 100
+    }
 ];
 
 // game object
@@ -143,57 +141,57 @@ const WEAPONS = [{
  * @param {HTMLElement} container - the parent container we add it to
  */
 function addStat(label, container) {
-   let el = document.createElement('li');
-   let id = label.toLowerCase();
-   let value = '0';
-   el.innerHTML = `<label>${label}</label>: <span id="${id}" ${value}></span>`
-   container.appendChild(el);
-   return container;
+    let el = document.createElement('li');
+    let id = label.toLowerCase();
+    let value = '0';
+    el.innerHTML = `<label>${label}</label>: <span id="${id}" ${value}></span>`
+    container.appendChild(el);
+    return container;
 }
 
 function createDOM() {
 
-   let container = document.getElementById('container');
+    let container = document.getElementById('container');
 
-   let hud = document.createElement('ul');
+    let hud = document.createElement('ul');
 
-   hud.id = 'hud';
+    hud.id = 'hud';
 
-   let labels = ['XP', 'Level', 'Health', 'Weapon', 'Damage', 'Enemies','Relics'];
+    let labels = ['XP', 'Level', 'Health', 'Weapon', 'Damage', 'Enemies', 'Relics'];
 
-   for (var label of labels) {
-      hud = addStat(label, hud);
-   }
-   container.appendChild(hud);
+    for (var label of labels) {
+        hud = addStat(label, hud);
+    }
+    container.appendChild(hud);
 
-   // add canvas
-   let canvas = document.createElement('canvas');
-   canvas.id = 'grid';
+    // add canvas
+    let canvas = document.createElement('canvas');
+    canvas.id = 'grid';
 
 
 
-   canvas.height = ROWS * TILE_DIM;
-   canvas.width = COLS * TILE_DIM;
+    canvas.height = ROWS * TILE_DIM;
+    canvas.width = COLS * TILE_DIM;
 
-   container.appendChild(canvas);
+    container.appendChild(canvas);
 
-   // create the button
-   let btn = document.createElement('button');
-   btn.className = 'toggle';
-   btn.textContent = 'Toggle Shadow';
+    // create the button
+    let btn = document.createElement('button');
+    btn.className = 'toggle';
+    btn.textContent = 'Toggle Shadow';
 
-   container.appendChild(btn);
+    container.appendChild(btn);
 
-   btn.addEventListener('click', toggleShadow);
+    btn.addEventListener('click', toggleShadow);
 }
 
 function toggleShadow() {
-   game.isShadowToggled = !game.isShadowToggled;
-   drawMap(0, 0, COLS, ROWS);
+    game.isShadowToggled = !game.isShadowToggled;
+    drawMap(0, 0, COLS, ROWS);
 
-   if (game.offset.y != 0 || game.offset.x != 0) {
-      drawOffsetRegion();
-   }
+    if (game.offset.y != 0 || game.offset.x != 0) {
+        drawOffsetRegion();
+    }
 }
 
 /**
@@ -203,12 +201,12 @@ var game = null;
 var player = null;
 
 function init() {
-   createDOM();
-   game = new Game();
-   game.canvas = document.getElementById("grid");
-   game.context = game.canvas.getContext("2d");
-   startGame();
-   addKeyboardListener();
+    createDOM();
+    game = new Game();
+    game.canvas = document.getElementById("grid");
+    game.context = game.canvas.getContext("2d");
+    startGame();
+    document.addEventListener('keydown', checkDirection);
 
 }
 init();
@@ -221,61 +219,62 @@ init();
 
 function startGame() {
 
-  let ready = sequentialRooms();
+    let ready = sequentialRooms();
 
-  if (ready) {
-     generatePlayer();
-     generateShadow();
-     generateItems(STARTING_WEAPONS_AMOUNT, WEAPON_CODE);
-     generateItems(STARTING_POTIONS_AMOUNT, POTION_CODE);
-     generateEnemies(TOTAL_ENEMIES);
-     updateStats();
-     drawMap(0, 0, COLS, ROWS);
+    if (ready) {
+        generatePlayer();
+        generateShadow();
+        generateItems(STARTING_WEAPONS_AMOUNT, WEAPON_CODE);
+        generateItems(STARTING_POTIONS_AMOUNT, POTION_CODE);
+        generateEnemies(TOTAL_ENEMIES);
+        updateStats();
+        drawMap(0, 0, COLS, ROWS);
 
-  }
+    }
 }
+
 function labelRooms() {
-   game.context.fillStyle ='black';
-   game.context.font = '15px Arial';
-   game.rooms.forEach(function(room) {
+    game.context.fillStyle = 'black';
+    game.context.font = '15px Arial';
+    game.rooms.forEach(function(room) {
 
-      let txt = `r${room.id} (${room.start.x},${room.start.y})`;
+        let txt = `r${room.id} (${room.start.x},${room.start.y})`;
 
-      game.context.fillText(txt, (room.start.x+1)*TILE_DIM, room.center.y*TILE_DIM);
-   });
+        game.context.fillText(txt, (room.start.x + 1) * TILE_DIM, room.center.y * TILE_DIM);
+    });
 }
 
 
-   
+
 
 /**
  * Randomly generates a set of dimensions.
  * 
  */
 function genDim(baseDim, added, roomType) {
-   const BASE_DIM = baseDim || 6;
+    const BASE_DIM = baseDim || 6;
 
-   let width, height;
+    let width, height;
 
-   width = height = BASE_DIM;
+    width = height = BASE_DIM;
 
-   const EXTRA_RANGE = 5;
+    const EXTRA_RANGE = 5;
 
-   let additional = added || Math.round(Math.random() * EXTRA_RANGE);
+    let additional = added || Math.round(Math.random() * EXTRA_RANGE);
 
-   if (!roomType) {
-      roomType = Math.random() < 0.5 ? 'tall' : 'wide';
-   } 
+    if (!roomType) {
+        roomType = Math.random() < 0.5 ? 'tall' : 'wide';
+    }
 
-   if (roomType == 'tall') {
-      height += additional;
-   } else {
-      width += additional;
-   }
-   return {
-      width,
-      height
-   };
+    if (roomType == 'tall') {
+        height += additional;
+    } else {
+        width += additional;
+    }
+    return {
+        width,
+        height
+    };
 }
 
 /**
@@ -288,23 +287,23 @@ function genDim(baseDim, added, roomType) {
 function setRoomCoords(center, width, height) {
 
 
-   let halfW = Math.round(width / 2);
-   let halfH = Math.round(height / 2);
+    let halfW = Math.round(width / 2);
+    let halfH = Math.round(height / 2);
 
-   let start = {
-      x: center.x - halfW,
-      y: center.y - halfH
-   };
+    let start = {
+        x: center.x - halfW,
+        y: center.y - halfH
+    };
 
-   let end = {
-      x: center.x + halfW,
-      y: center.y + halfH
-   };
+    let end = {
+        x: center.x + halfW,
+        y: center.y + halfH
+    };
 
-   return {
-      start,
-      end
-   };
+    return {
+        start,
+        end
+    };
 }
 /**
  * Generates one room based on a center point.
@@ -312,51 +311,57 @@ function setRoomCoords(center, width, height) {
  */
 function generateRoom(center, width, height) {
 
-   // get coordinates based on width and height
-   let { start, end } = setRoomCoords(center, width, height);
+    // get coordinates based on width and height
+    let {
+        start,
+        end
+    } = setRoomCoords(center, width, height);
 
-   let room = new Room(center, start, end);
+    let room = new Room(center, start, end);
 
-   room.id = game.curRoomId;
+    room.id = game.curRoomId;
 
-   return room;
+    return room;
 
 }
 
 function addRoom(coords, baseDim, additional, roomType) {
 
-   let { width, height} = genDim(baseDim, additional, roomType);
+    let {
+        width,
+        height
+    } = genDim(baseDim, additional, roomType);
 
-   const genCenterCoord = (maxCells, dim) => {
-      // get limit on either side based on outer limit and a room dimension - width or height
-      let limit = OUTER_LIMIT + Math.round(dim / 2);
+    const genCenterCoord = (maxCells, dim) => {
+        // get limit on either side based on outer limit and a room dimension - width or height
+        let limit = OUTER_LIMIT + Math.round(dim / 2);
 
-      // get range based on cells in array - limit on either side.
-      let range = maxCells - 2 * limit;
+        // get range based on cells in array - limit on either side.
+        let range = maxCells - 2 * limit;
 
-      // get a random  number within 
-      return limit + Math.round(Math.random() * range);
-   }
+        // get a random  number within 
+        return limit + Math.round(Math.random() * range);
+    }
 
-   coords = coords || {
-      x: genCenterCoord(COLS, width),
-      y: genCenterCoord(ROWS, height)
-   }
+    coords = coords || {
+        x: genCenterCoord(COLS, width),
+        y: genCenterCoord(ROWS, height)
+    }
 
-   let room = generateRoom(coords, width, height);
+    let room = generateRoom(coords, width, height);
 
-   for (var gameRoom of game.rooms) {
+    for (var gameRoom of game.rooms) {
 
-      if (room.overlaps(gameRoom, 1)) {
-         return null;
-      }
+        if (room.overlaps(gameRoom, 1)) {
+            return null;
+        }
 
-   }
+    }
 
-   game.curRoomId++;
-   game.roomToMap(room);
-   game.rooms.push(room);
-   return room;
+    game.curRoomId++;
+    game.roomToMap(room);
+    game.rooms.push(room);
+    return room;
 
 }
 
@@ -368,37 +373,40 @@ function addRoom(coords, baseDim, additional, roomType) {
 
 function generateMapRooms() {
 
-   game.resetMap();
+    game.resetMap();
 
-   let maxSeqLen = 30;
+    let maxSeqLen = 30;
 
-   for (var i = 0; i < maxSeqLen; ++i) {
-      addRoom();
-   }
-   let success = false;
+    for (var i = 0; i < maxSeqLen; ++i) {
+        addRoom();
+    }
+    let success = false;
 
-   const min = 3;
+    const min = 3;
 
-   for (var room of game.rooms) {
+    for (var room of game.rooms) {
 
-      success = room.findFacingRooms(min);
+        success = room.findFacingRooms(min);
 
-      // make diagonal-only? 
-      success = room.nearestNeighbor();
- 
-   }
-   for (var myRoom of game.rooms) {
+        // make diagonal-only? 
+        success = room.nearestNeighbor();
 
-     let {numConnected, numDisc} = myRoom.connectRemaining();
+    }
+    for (var myRoom of game.rooms) {
 
-   }
+        let {
+            numConnected,
+            numDisc
+        } = myRoom.connectRemaining();
+
+    }
 }
 
 function printNeighbors() {
-   for (var room of game.rooms) {
-      let ids = room.neighbors.map(x => x.id);
+    for (var room of game.rooms) {
+        let ids = room.neighbors.map(x => x.id);
 
-   }
+    }
 }
 /**
  * The generate map function
@@ -407,72 +415,72 @@ function printNeighbors() {
  */
 function generateMapTunnels() {
 
-   // set up total number of tiles used
-   // and the total number of penalties made
-   game.resetMap();
+    // set up total number of tiles used
+    // and the total number of penalties made
+    game.resetMap();
 
 
-   let pos = {
-      x: COLS / 2,
-      y: ROWS / 2
-   };
+    let pos = {
+        x: COLS / 2,
+        y: ROWS / 2
+    };
 
-   const ATTEMPTS = 30000;
-   const MAX_PENALTIES_COUNT = 1000;
-   const MINIMUM_TILES_AMOUNT = 1000;
+    const ATTEMPTS = 30000;
+    const MAX_PENALTIES_COUNT = 1000;
+    const MINIMUM_TILES_AMOUNT = 1000;
 
-   const randomDirection = () => Math.random() <= 0.5 ? -1 : 1;
+    const randomDirection = () => Math.random() <= 0.5 ? -1 : 1;
 
-   let tiles = 0,
-      penalties = 0;
+    let tiles = 0,
+        penalties = 0;
 
-   for (var i = 0; i < ATTEMPTS; i++) {
+    for (var i = 0; i < ATTEMPTS; i++) {
 
-      // choose an axis to dig on.
-      let axis = Math.random() <= 0.5 ? 'x' : 'y';
+        // choose an axis to dig on.
+        let axis = Math.random() <= 0.5 ? 'x' : 'y';
 
-      // get the number of rows or columns, depending on the axis.
-      let numCells = axis == 'x' ? COLS : ROWS;
+        // get the number of rows or columns, depending on the axis.
+        let numCells = axis == 'x' ? COLS : ROWS;
 
-      // choose the positive or negative direction.
-      pos[axis] += randomDirection();
+        // choose the positive or negative direction.
+        pos[axis] += randomDirection();
 
-      // if we are on the far left or far right, find another value.
+        // if we are on the far left or far right, find another value.
 
-      // we don't want to dig here so let's find a way to get out
-      while (pos[axis] < OUTER_LIMIT || pos[axis] >= numCells - OUTER_LIMIT) {
+        // we don't want to dig here so let's find a way to get out
+        while (pos[axis] < OUTER_LIMIT || pos[axis] >= numCells - OUTER_LIMIT) {
 
-         pos[axis] += randomDirection();
+            pos[axis] += randomDirection();
 
-         penalties++;
+            penalties++;
 
-         if (penalties > MAX_PENALTIES_COUNT) {
+            if (penalties > MAX_PENALTIES_COUNT) {
 
-            // if we have used up our tiles, we're done.
-            if (tiles >= MINIMUM_TILES_AMOUNT) {
-               return;
+                // if we have used up our tiles, we're done.
+                if (tiles >= MINIMUM_TILES_AMOUNT) {
+                    return;
+                }
+                // bring coords back to center
+                pos.x = COLS / 2;
+                pos.y = ROWS / 2;
             }
-            // bring coords back to center
-            pos.x = COLS / 2;
-            pos.y = ROWS / 2;
-         }
-      }
+        }
 
-      let {
-         x,
-         y
-      } = pos;
+        let {
+            x,
+            y
+        } = pos;
 
-      // if not a floor, make this a floor
-      if (game.map[y][x] != FLOOR_CODE) {
+        // if not a floor, make this a floor
+        if (game.map[y][x] != FLOOR_CODE) {
 
-         game.map[y][x] = FLOOR_CODE;
-         // we use up a tile.
-         tiles++;
-      }
-      penalties = 0;
+            game.map[y][x] = FLOOR_CODE;
+            // we use up a tile.
+            tiles++;
+        }
+        penalties = 0;
 
-   } // end the large loop
+    } // end the large loop
 }
 
 /**
@@ -481,22 +489,23 @@ function generateMapTunnels() {
  *                            used to index into the TILE_COLORS array
  */
 function generateItems(quantity, tileCode) {
-   for (var i = 0; i < quantity; i++) {
+    for (var i = 0; i < quantity; i++) {
 
-      let coords = generateValidCoords();
+        let coords = generateValidCoords();
 
-      placeItem(coords,tileCode);
-   }
+        placeItem(coords, tileCode);
+    }
 }
-function placeItem(coords,tileCode) {
-   
-   addObjToMap(coords, tileCode);
 
-   if (!game.isShadowToggled ||
-         game.shadow[coords.y][coords.x] == VISIBLE_CODE) {
-         let color = TILE_COLORS[tileCode];
-         drawObject(coords.x, coords.y, color);
-   }
+function placeItem(coords, tileCode) {
+
+    addObjToMap(coords, tileCode);
+
+    if (!game.isShadowToggled ||
+        game.shadow[coords.y][coords.x] == VISIBLE_CODE) {
+        let color = TILE_COLORS[tileCode];
+        drawObject(coords.x, coords.y, color);
+    }
 }
 
 /**
@@ -507,45 +516,45 @@ function placeItem(coords,tileCode) {
  */
 function updateStats() {
 
-   let player_props = ['xp', 'level', 'health'];
+    let player_props = ['xp', 'level', 'health'];
 
-   for (var prop of player_props) {
-      let el = document.getElementById(prop);
+    for (var prop of player_props) {
+        let el = document.getElementById(prop);
 
-      el.textContent = player[prop];
-   }
-   let el = document.getElementById('relics');
+        el.textContent = player[prop];
+    }
+    let el = document.getElementById('relics');
 
-   el.textContent = `${player.relics}/${game.relics}`;
+    el.textContent = `${player.relics}/${game.relics}`;
 
-   let weapon_props = [{
-         domId: 'weapon',
-         key: 'name',
-      },
-      {
-         domId: 'damage',
-         key: 'damage'
-      }
-   ];
+    let weapon_props = [{
+            domId: 'weapon',
+            key: 'name',
+        },
+        {
+            domId: 'damage',
+            key: 'damage'
+        }
+    ];
 
-   for (var prop of weapon_props) {
+    for (var prop of weapon_props) {
 
-      let {
-         domId,
-         key
-      } = prop;
+        let {
+            domId,
+            key
+        } = prop;
 
-      let el = document.getElementById(domId);
+        let el = document.getElementById(domId);
 
-      el.textContent = player.weapon[key];
-   }
+        el.textContent = player.weapon[key];
+    }
 
 
-   let stats = document.getElementById('enemies');
+    let stats = document.getElementById('enemies');
 
-   stats.textContent = game.enemies.length;
+    stats.textContent = game.enemies.length;
 
-  
+
 }
 
 
@@ -559,28 +568,28 @@ function updateStats() {
  */
 function drawMap(startX, startY, endX, endY) {
 
-   // loop through all cells of the map
-   for (var row = startY; row < endY; row++) {
+    // loop through all cells of the map
+    for (var row = startY; row < endY; row++) {
 
-      for (var col = startX; col < endX; col++) {
+        for (var col = startX; col < endX; col++) {
 
-         let color = null;
+            let color = null;
 
-         // if shadow is on and the shadow is down....
+            // if shadow is on and the shadow is down....
 
-         if (game.isShadowToggled && game.shadow[row] && game.shadow[row][col] == SHADOW_CODE) {
-            // simply draw black.
-            color = '#000';
+            if (game.isShadowToggled && game.shadow[row] && game.shadow[row][col] == SHADOW_CODE) {
+                // simply draw black.
+                color = '#000';
 
-         } else {
-            let c_idx = game.map[row][col];
+            } else {
+                let c_idx = game.map[row][col];
 
-            color = TILE_COLORS[c_idx];
-         }
-         drawObject(col, row, color);
+                color = TILE_COLORS[c_idx];
+            }
+            drawObject(col, row, color);
 
-      } // end loop
-   }
+        } // end loop
+    }
 }
 
 /**
@@ -589,96 +598,102 @@ function drawMap(startX, startY, endX, endY) {
 
 function generateValidCoords() {
 
-   var x=null, y=null;
+    var x = null,
+        y = null;
 
-   let turns = 0,
-      limit = 100;
+    let turns = 0,
+        limit = 100;
 
-   do {
-      x = Math.floor(Math.random() * COLS);
-      y = Math.floor(Math.random() * ROWS);
-      turns++;
-   }
-   while (game.map[y][x] != FLOOR_CODE && turns < limit);
+    do {
+        x = Math.floor(Math.random() * COLS);
+        y = Math.floor(Math.random() * ROWS);
+        turns++;
+    }
+    while (game.map[y][x] != FLOOR_CODE && turns < limit);
 
-   return {x,y};
+    return {
+        x,
+        y
+    };
 
 }
 
 function pickRandom(arr) {
-   let idx = Math.floor(Math.random() * arr.length);
+    let idx = Math.floor(Math.random() * arr.length);
 
-   return arr[idx];
+    return arr[idx];
 }
 /**
  * @param {Number} amount
  */
 function generateEnemies(amount) {
-   for (var i = 0; i < amount; i++) {
-      // generate valid coordinates.
-      let coords = generateValidCoords();
+    for (var i = 0; i < amount; i++) {
+        // generate valid coordinates.
+        let coords = generateValidCoords();
 
-      let health = pickRandom(ENEMIES_HEALTH);
+        let health = pickRandom(ENEMIES_HEALTH);
 
-      let damage = pickRandom(ENEMIES_DAMAGE);
+        let damage = pickRandom(ENEMIES_DAMAGE);
 
-      let enemy = new Enemy(health, coords, damage);
+        let enemy = new Enemy(health, coords, damage);
 
-      game.enemies.push(enemy);
+        game.enemies.push(enemy);
 
-      addObjToMap(coords, ENEMY_CODE);
-   }
+        addObjToMap(coords, ENEMY_CODE);
+    }
 }
 
 function generatePlayer() {
 
 
 
-  let coords = {
-      x: COLS / 2,
-      y: ROWS / 2
-   };
+    let coords = {
+        x: COLS / 2,
+        y: ROWS / 2
+    };
 
-   // level, health, weapon, coords, xp
-   player = new Player(1, 100, WEAPONS[0], coords, 30, 0);
+    // level, health, weapon, coords, xp
+    player = new Player(1, 100, WEAPONS[0], coords, 30, 0);
 
-   addObjToMap(player.coords, PLAYER_CODE);
+    addObjToMap(player.coords, PLAYER_CODE);
 }
 
 // add given coords to map 
 // make the coords and neighbors busy
 // and draw object with given color
 function addObjToMap(coords, tileCode) {
-   game.map[coords.y][coords.x] = tileCode;
+    game.map[coords.y][coords.x] = tileCode;
 }
+
 function drawOffsetRegion() {
-   let color = (game.isShadowToggled) ? '#000' : TILE_COLORS[0];
-   let w = Math.abs(game.offset.x), h = Math.abs(game.offset.y);
+    let color = (game.isShadowToggled) ? '#000' : TILE_COLORS[0];
+    let w = Math.abs(game.offset.x),
+        h = Math.abs(game.offset.y);
 
-   let start = {
-      x:0,
-      y:0
-   };
-   
+    let start = {
+        x: 0,
+        y: 0
+    };
 
-   if (game.offset.x < 0) {
-      start.x = COLS + game.offset.x
-   }
-  
-   if (game.offset.y < 0) {
-      start.y = ROWS + game.offset.y
-   }
 
-   game.context.beginPath();
-   // vert stripe
-   game.context.rect(start.x*TILE_DIM, 0, w*TILE_DIM, ROWS*TILE_DIM);
-   game.context.fill();
-   game.context.fillStyle = color;
-   game.context.beginPath();
-   // horiz stripe
-   game.context.rect(0, start.y * TILE_DIM, COLS*TILE_DIM, h*TILE_DIM);
-   game.context.fillStyle = color;
-   game.context.fill();
+    if (game.offset.x < 0) {
+        start.x = COLS + game.offset.x
+    }
+
+    if (game.offset.y < 0) {
+        start.y = ROWS + game.offset.y
+    }
+
+    game.context.beginPath();
+    // vert stripe
+    game.context.rect(start.x * TILE_DIM, 0, w * TILE_DIM, ROWS * TILE_DIM);
+    game.context.fill();
+    game.context.fillStyle = color;
+    game.context.beginPath();
+    // horiz stripe
+    game.context.rect(0, start.y * TILE_DIM, COLS * TILE_DIM, h * TILE_DIM);
+    game.context.fillStyle = color;
+    game.context.fill();
 
 
 }
@@ -690,13 +705,13 @@ function drawOffsetRegion() {
  */
 function drawObject(x, y, color) {
 
-   y = y + game.offset.y;
-   x = x + game.offset.x;
+    y = y + game.offset.y;
+    x = x + game.offset.x;
 
-   game.context.beginPath();
-   game.context.rect(x * TILE_DIM, y * TILE_DIM, TILE_DIM, TILE_DIM);
-   game.context.fillStyle = color;
-   game.context.fill();
+    game.context.beginPath();
+    game.context.rect(x * TILE_DIM, y * TILE_DIM, TILE_DIM, TILE_DIM);
+    game.context.fillStyle = color;
+    game.context.fill();
 }
 
 
@@ -706,121 +721,118 @@ function drawObject(x, y, color) {
  * @TODO: Lose the jQuery
  * https://stackoverflow.com/questions/26131686/trigger-keyboard-event-in-vanilla-javascript
  */
-function addKeyboardListener() {
-   document.addEventListener('keydown', function(e) {
-      
-      let {x, y} = player.coords;
+function checkDirection(e) {
+    // prevent the default action (scroll / move caret)
+    e.preventDefault();
 
+    let {
+        x,
+        y
+    } = player.coords;
 
-
-      let offset = {
-         x:0,
-         y:0
-      };
-      let absPos = {
-         x:x + game.offset.x,
-         y:y + game.offset.y
-      };
-
-
-      switch (e.which) {
-         case 37: // left
+    let offset = {
+        x: 0,
+        y: 0
+    };
+    let absPos = {
+        x: x + game.offset.x,
+        y: y + game.offset.y
+    };
+    switch (e.which) {
+        case 37: // left
             x--;
-            if (absPos.x < (COLS - STATIC_DIM.x)/2) {
-               offset.x = 1;
+            if (absPos.x < (COLS - STATIC_DIM.x) / 2) {
+                offset.x = 1;
             }
 
-         
+
             break;
-         case 38: // up
+        case 38: // up
             y--;
 
-            if (absPos.y < (ROWS - STATIC_DIM.y)/2) {
-               offset.y = 1;
+            if (absPos.y < (ROWS - STATIC_DIM.y) / 2) {
+                offset.y = 1;
             }
-    
+
             break;
-         case 39: // right
+        case 39: // right
             x++;
-            if (absPos.x > (COLS + STATIC_DIM.x)/2) {
-               offset.x = -1;
-            }
-            else {
+            if (absPos.x > (COLS + STATIC_DIM.x) / 2) {
+                offset.x = -1;
+            } else {
 
             }
             break;
-         case 40: // down
-       
+        case 40: // down
+
             y++;
-            if (absPos.y > (ROWS + STATIC_DIM.y)/2) {
-               offset.y = -1; 
+            if (absPos.y > (ROWS + STATIC_DIM.y) / 2) {
+                offset.y = -1;
             }
             break;
-         default:
+        default:
             return; // exit this handler for other keys
-      }
-      // check if next spot is enemy
-      if (game.map[y][x] == ENEMY_CODE) {
+    }
+    if (game.map[y][x] == ENEMY_CODE) {
 
-         const matching_coords = (enemy) => {
-            return enemy.coords.x == x && enemy.coords.y == y;
-         }
-         let enemy = game.enemies.find(matching_coords);
+        checkEnemy(x, y);
 
-         fightEnemy(enemy);
-      } else if (game.map[y][x] != WALL_CODE) {
+    } else if (game.map[y][x] != WALL_CODE) {
 
-         game.offset.y += offset.y;
-         game.offset.x += offset.x;
+        game.offset.y += offset.y;
+        game.offset.x += offset.x;
 
-         // if next spot is potion
-         if (game.map[y][x] == POTION_CODE) {
-
-            player.health += pickRandom(POTIONS);
-
-            removeObjFromMap(x, y);
-            generateItems(1, POTION_CODE);
-            // if next spot is weapon
-         } else if (game.map[y][x] == WEAPON_CODE) {
-
-            player.weapon = pickRandom(WEAPONS);
-
-            removeObjFromMap(x, y);
-            generateItems(1, WEAPON_CODE);
-         }
-         else if (game.map[y][x] == RELIC_CODE) {
-            player.relics++;
-            const maxValue = 10;
-            player.xp += Math.round(Math.random()*maxValue);
-            removeObjFromMap(x,y);
-            checkForWin();
-         }
-
-         let {x:oldX, y:oldY} = player.coords;
-         // update player position
-         updatePlayerPosition(oldX, oldY, x, y);
-
-         updateStats();
-
-      
-
-         if (offset.x != 0 || offset.y != 0) {
-           drawMap(0, 0, COLS, ROWS);
-           drawOffsetRegion();
-         }
-         else {
-          let left = oldX - VISIBILITY - 1;
-          let top = oldY - VISIBILITY - 1;
-
-          let right = x + VISIBILITY + 2;
-          let bot = y + VISIBILITY + 2;
-          drawMap(left, top, right, bot);
-         }
-      }
-      e.preventDefault(); // prevent the default action (scroll / move caret)
-   });
+        movePlayer(x, y, offset);
+    }
 }
-function checkEnemy(x,y) {
+
+function movePlayer(x, y, offset) {
+    // if next spot is potion
+    if (game.map[y][x] == POTION_CODE) {
+
+        player.health += pickRandom(POTIONS);
+
+        removeObjFromMap(x, y);
+        generateItems(1, POTION_CODE);
+        // if next spot is weapon
+    } else if (game.map[y][x] == WEAPON_CODE) {
+
+        player.weapon = pickRandom(WEAPONS);
+
+        removeObjFromMap(x, y);
+        generateItems(1, WEAPON_CODE);
+    } else if (game.map[y][x] == RELIC_CODE) {
+        player.relics++;
+        const maxValue = 10;
+        player.xp += Math.round(Math.random() * maxValue);
+        removeObjFromMap(x, y);
+        checkForWin();
+    }
+    let {
+        x: oldX,
+        y: oldY
+    } = player.coords;
+    // update player position
+    updatePlayerPosition(oldX, oldY, x, y);
+
+    updateStats();
+
+    if (offset.x != 0 || offset.y != 0) {
+        drawMap(0, 0, COLS, ROWS);
+        drawOffsetRegion();
+    } else {
+        let left = oldX - VISIBILITY - 1;
+        let top = oldY - VISIBILITY - 1;
+        let right = x + VISIBILITY + 2;
+        let bot = y + VISIBILITY + 2;
+        drawMap(left, top, right, bot);
+    }
+}
+/**
+ * Enemy Logic 
+ */
+
+function checkEnemy(x, y) {
 
     const matching_coords = (enemy) => {
         return enemy.coords.x == x && enemy.coords.y == y;
@@ -833,87 +845,87 @@ function checkEnemy(x,y) {
     }
 
 }
+
 function fightEnemy(enemy) {
-   if (player.health - enemy.damage <= 0) {
-      gameOver();
-      return;
-   }
-   if (enemy.health - player.weapon.damage <= 0) {
-      enemyDefeated(enemy);
-   } else {
-      enemy.health -= player.weapon.damage;
-   }
-   player.health -= enemy.damage;
-   updateStats();
+    if (player.health - enemy.damage <= 0) {
+        gameOver();
+        return;
+    }
+    if (enemy.health - player.weapon.damage <= 0) {
+        enemyDefeated(enemy);
+    } else {
+        enemy.health -= player.weapon.damage;
+    }
+    player.health -= enemy.damage;
+    updateStats();
 }
 
 function enemyDefeated(enemy) {
 
-   // remove enemy from  2D array
-   removeObjFromMap(enemy.coords.x, enemy.coords.y);
+    // remove enemy from  2D array
+    removeObjFromMap(enemy.coords.x, enemy.coords.y);
 
-   let left = enemy.coords.x - 1;
-   let top = enemy.coords.y - 1
-   let right = enemy.coords.x + 1;
-   let bot = enemy.coords.y + 1;
-   // remove ane enemy from the visible map.
-   drawMap(left, top, right, bot);
+    let left = enemy.coords.x - 1;
+    let top = enemy.coords.y - 1
+    let right = enemy.coords.x + 1;
+    let bot = enemy.coords.y + 1;
+    // remove ane enemy from the visible map.
+    drawMap(left, top, right, bot);
 
-   // add experience points
-   player.xp += Math.round((enemy.damage + enemy.health) / 2);
+    // add experience points
+    player.xp += Math.round((enemy.damage + enemy.health) / 2);
 
-   // calculate the level in points. Level 1 has no experience so machine-wise it is level 0.
-   let level_in_points = POINTS_PER_LEVEL * (player.level - 1)
+    // calculate the level in points. Level 1 has no experience so machine-wise it is level 0.
+    let level_in_points = POINTS_PER_LEVEL * (player.level - 1)
 
-   // level up if needed.
-   if (player.xp - level_in_points >= POINTS_PER_LEVEL) {
+    // level up if needed.
+    if (player.xp - level_in_points >= POINTS_PER_LEVEL) {
 
-      player.level++;
-   }
+        player.level++;
+    }
 
-   // remove enemy from enemies array
-   let e_idx = game.enemies.indexOf(enemy);
+    // remove enemy from enemies array
+    let e_idx = game.enemies.indexOf(enemy);
 
-   // remove enemy from array
-   game.enemies.splice(e_idx, 1);
+    // remove enemy from array
+    game.enemies.splice(e_idx, 1);
 
-   // update stats
-   updateStats();
+    // update stats
+    updateStats();
 
-   checkForWin();
+    checkForWin();
 
-   // if no enemies, user wins
-  
+    // if no enemies, user wins
+
 }
 
 
 function checkForWin() {
 
-   if (game.enemies.length == 0 && 
-      game.itemsLeft(RELIC_CODE)==0) {
-      userWins();
-   }
+    if (game.enemies.length == 0 &&
+        game.itemsLeft(RELIC_CODE) == 0) {
+        userWins();
+    }
 }
 
 
 
 
-
 function userWins() {
-   alert("YOU CONQUERED THE DUNGEON!");
-   game.reset();
-   startGame();
+    alert("YOU CONQUERED THE DUNGEON!");
+    game.reset();
+    startGame();
 };
 
 function gameOver() {
-   alert("GAME OVER");
-   game.reset();
-   startGame();
+    alert("GAME OVER");
+    game.reset();
+    startGame();
 };
 
 function removeObjFromMap(x, y) {
-   // make this a floor coordinate
-   game.map[y][x] = FLOOR_CODE;
+    // make this a floor coordinate
+    game.map[y][x] = FLOOR_CODE;
 };
 
 
@@ -922,35 +934,35 @@ function removeObjFromMap(x, y) {
  */
 function generateShadow() {
 
-   game.shadow = [];
-   let start = {},
-      end = {};
+    game.shadow = [];
+    let start = {},
+        end = {};
 
-   let left_edge = player.coords.x - VISIBILITY;
-   let top_edge = player.coords.y - VISIBILITY;
+    let left_edge = player.coords.x - VISIBILITY;
+    let top_edge = player.coords.y - VISIBILITY;
 
-   start.x = left_edge < 0 ? 0 : left_edge;
-   start.y = top_edge < 0 ? 0 : top_edge;
+    start.x = left_edge < 0 ? 0 : left_edge;
+    start.y = top_edge < 0 ? 0 : top_edge;
 
-   let right_edge = player.coords.x + VISIBILITY;
-   let bot_edge = player.coords.y + VISIBILITY;
+    let right_edge = player.coords.x + VISIBILITY;
+    let bot_edge = player.coords.y + VISIBILITY;
 
-   end.x = right_edge >= COLS ? COLS - 1 : right_edge;
-   end.y = bot_edge >= ROWS ? ROWS - 1 : bot_edge;
+    end.x = right_edge >= COLS ? COLS - 1 : right_edge;
+    end.y = bot_edge >= ROWS ? ROWS - 1 : bot_edge;
 
-   // iterate through all squares on the map
-   for (var row = 0; row < ROWS; row++) {
-      game.shadow.push([]);
-      for (var col = 0; col < COLS; col++) {
-         // if this falls within visible doorTiles, push 1
-         if (row >= start.y && row <= end.y && col >= start.x && col <= end.x) {
-            game.shadow[row].push(VISIBLE_CODE);
-            // else, push 0
-         } else {
-            game.shadow[row].push(SHADOW_CODE);
-         }
-      }
-   }
+    // iterate through all squares on the map
+    for (var row = 0; row < ROWS; row++) {
+        game.shadow.push([]);
+        for (var col = 0; col < COLS; col++) {
+            // if this falls within visible doorTiles, push 1
+            if (row >= start.y && row <= end.y && col >= start.x && col <= end.x) {
+                game.shadow[row].push(VISIBLE_CODE);
+                // else, push 0
+            } else {
+                game.shadow[row].push(SHADOW_CODE);
+            }
+        }
+    }
 }
 
 /**
@@ -963,63 +975,63 @@ function generateShadow() {
  * @param {Number} newY
  */
 function updatePlayerPosition(oldX, oldY, newX, newY) {
-   removeObjFromMap(oldX, oldY);
+    removeObjFromMap(oldX, oldY);
 
-   // set this as the player
-   game.map[newY][newX] = PLAYER_CODE;
+    // set this as the player
+    game.map[newY][newX] = PLAYER_CODE;
 
-   player.coords = {
-      x: newX,
-      y: newY 
-   };
+    player.coords = {
+        x: newX,
+        y: newY
+    };
 
-   let start = {},
-      end = {};
+    let start = {},
+        end = {};
 
-   // if player is going right and down
-   let old_left = oldX - VISIBILITY;
-   let old_top = oldY - VISIBILITY;
+    // if player is going right and down
+    let old_left = oldX - VISIBILITY;
+    let old_top = oldY - VISIBILITY;
 
-   start.x = old_left < 0 ? 0 : old_left;
-   start.y = old_top < 0 ? 0 : old_top;
+    start.x = old_left < 0 ? 0 : old_left;
+    start.y = old_top < 0 ? 0 : old_top;
 
-   let new_right = newX + VISIBILITY;
-   let new_bot = newY + VISIBILITY;
+    let new_right = newX + VISIBILITY;
+    let new_bot = newY + VISIBILITY;
 
-   end.x = new_right >= COLS ? COLS - 1 : new_right;
-   end.y = new_bot >= ROWS ? ROWS - 1 : new_bot;
+    end.x = new_right >= COLS ? COLS - 1 : new_right;
+    end.y = new_bot >= ROWS ? ROWS - 1 : new_bot;
 
-   // if player is moving left
-   if (oldX > newX) {
-      // use newX rather than oldX as the left edge of the square.
-      start.x = newX - VISIBILITY;
-      // make sure to turn the right part of the square black
-      // the right edge of the square is more to the right.
-      end.x = oldX + VISIBILITY;
-   }
-   // if player is moving up
-   if (oldY > newY) {
-      // newY is less so it's better to use it than oldY
-      // the top edge of the rendering area is higher
-      // make sure that you re-render the squares that have to change above the player
-      start.y = newY - VISIBILITY;
-      // the bottom edge is lower
-      end.y = oldY + VISIBILITY;
-   }
+    // if player is moving left
+    if (oldX > newX) {
+        // use newX rather than oldX as the left edge of the square.
+        start.x = newX - VISIBILITY;
+        // make sure to turn the right part of the square black
+        // the right edge of the square is more to the right.
+        end.x = oldX + VISIBILITY;
+    }
+    // if player is moving up
+    if (oldY > newY) {
+        // newY is less so it's better to use it than oldY
+        // the top edge of the rendering area is higher
+        // make sure that you re-render the squares that have to change above the player
+        start.y = newY - VISIBILITY;
+        // the bottom edge is lower
+        end.y = oldY + VISIBILITY;
+    }
 
-   for (var row = start.y; row <= end.y; row++) {
-      for (var col = start.x; col <= end.x; col++) {
+    for (var row = start.y; row <= end.y; row++) {
+        for (var col = start.x; col <= end.x; col++) {
 
-         if (row >= newY - VISIBILITY &&
-            row <= newY + VISIBILITY &&
-            col >= newX - VISIBILITY &&
-            col <= newX + VISIBILITY) {
-            // show shadow
-            game.shadow[row][col] = VISIBLE_CODE;
-         } else {
-            // no shadow
-            game.shadow[row][col] = SHADOW_CODE;
-         }
-      }
-   }
+            if (row >= newY - VISIBILITY &&
+                row <= newY + VISIBILITY &&
+                col >= newX - VISIBILITY &&
+                col <= newX + VISIBILITY) {
+                // show shadow
+                game.shadow[row][col] = VISIBLE_CODE;
+            } else {
+                // no shadow
+                game.shadow[row][col] = SHADOW_CODE;
+            }
+        }
+    }
 }
