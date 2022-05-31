@@ -310,10 +310,7 @@ function generateRoom(center, width, height) {
 
 function addRoom(coords, baseDim, additional, roomType) {
 
-    let {
-        width,
-        height
-    } = genDim(baseDim, additional, roomType);
+    let { width,height} = genDim(baseDim, additional, roomType);
 
     const genCenterCoord = (maxCells, dim) => {
         // get limit on either side based on outer limit and a room dimension - width or height
@@ -392,81 +389,6 @@ function printNeighbors() {
 
     }
 }
-/**
- * The generate map function
- * 
- * This algorithmm starts in the center and works its way outward.
- */
-function generateMapTunnels() {
-
-    // set up total number of tiles used
-    // and the total number of penalties made
-    game.resetMap();
-
-
-    let pos = {
-        x: COLS / 2,
-        y: ROWS / 2
-    };
-
-    const ATTEMPTS = 30000;
-    const MAX_PENALTIES_COUNT = 1000;
-    const MINIMUM_TILES_AMOUNT = 1000;
-
-    const randomDirection = () => Math.random() <= 0.5 ? -1 : 1;
-
-    let tiles = 0,
-        penalties = 0;
-
-    for (var i = 0; i < ATTEMPTS; i++) {
-
-        // choose an axis to dig on.
-        let axis = Math.random() <= 0.5 ? 'x' : 'y';
-
-        // get the number of rows or columns, depending on the axis.
-        let numCells = axis == 'x' ? COLS : ROWS;
-
-        // choose the positive or negative direction.
-        pos[axis] += randomDirection();
-
-        // if we are on the far left or far right, find another value.
-
-        // we don't want to dig here so let's find a way to get out
-        while (pos[axis] < OUTER_LIMIT || pos[axis] >= numCells - OUTER_LIMIT) {
-
-            pos[axis] += randomDirection();
-
-            penalties++;
-
-            if (penalties > MAX_PENALTIES_COUNT) {
-
-                // if we have used up our tiles, we're done.
-                if (tiles >= MINIMUM_TILES_AMOUNT) {
-                    return;
-                }
-                // bring coords back to center
-                pos.x = COLS / 2;
-                pos.y = ROWS / 2;
-            }
-        }
-
-        let {
-            x,
-            y
-        } = pos;
-
-        // if not a floor, make this a floor
-        if (game.map[y][x] != FLOOR_CODE) {
-
-            game.map[y][x] = FLOOR_CODE;
-            // we use up a tile.
-            tiles++;
-        }
-        penalties = 0;
-
-    } // end the large loop
-}
-
 /**
  * @param {Number} quantity - the number of items to generate
  * @param {Number} tileCode - corresponds to a constant, such as POTION_CODE.
@@ -606,25 +528,6 @@ function pickRandom(arr) {
 
     return arr[idx];
 }
-/**
- * @param {Number} amount
- */
-function generateEnemies(amount) {
-    for (var i = 0; i < amount; i++) {
-        // generate valid coordinates.
-        let coords = generateValidCoords();
-
-        let health = pickRandom(ENEMIES_HEALTH);
-
-        let damage = pickRandom(ENEMIES_DAMAGE);
-
-        let enemy = new Enemy(health, coords, damage);
-
-        game.enemies.push(enemy);
-
-        addObjToMap(coords, ENEMY_CODE);
-    }
-}
 
 function generatePlayer() {
 
@@ -647,166 +550,6 @@ function generatePlayer() {
 function addObjToMap(coords, tileCode) {
     game.map[coords.y][coords.x] = tileCode;
 }
-
-/**
- * @param {Number} x
- * @param {Number} y
- * @param {String} color
- */
-function drawObject(x, y, color) {
-
-    //  game.context.clearRect(x * 10, y * 10, 10, 10);
-    game.context.beginPath();
-    game.context.rect(x * TILE_DIM, y * TILE_DIM, TILE_DIM, TILE_DIM);
-    game.context.fillStyle = color;
-    game.context.fill();
-}
-
-
-
-// key down events
-/**
- * https://stackoverflow.com/questions/26131686/trigger-keyboard-event-in-vanilla-javascript
- */
-
-function checkDirection(e) {
-    // prevent the default action (scroll / move caret)
-    e.preventDefault();
-
-    let {x, y} = player.coords;
-
-    switch (e.which) {
-        case 37: // left
-            x--;
-            break;
-        case 38: // up
-            y--;
-            break;
-        case 39: // right
-            x++;
-            break;
-        case 40: // down
-            y++;
-            break;
-        default:
-            return;
-    }
-    if (game.map[y][x] == ENEMY_CODE) {
-
-        checkEnemy(x, y);
-
-    } else if (game.map[y][x] != WALL_CODE) {
-
-        movePlayer(x, y);
-    }
-}
-
-function movePlayer(x,y) {
-    // if next spot is potion
-    if (game.map[y][x] == POTION_CODE) {
-
-        player.health += pickRandom(POTIONS);
-
-        removeObjFromMap(x, y);
-        generateItems(1, POTION_CODE);
-        // if next spot is weapon
-    } else if (game.map[y][x] == WEAPON_CODE) {
-
-        player.weapon = pickRandom(WEAPONS);
-
-        removeObjFromMap(x, y);
-        generateItems(1, WEAPON_CODE);
-    } else if (game.map[y][x] == RELIC_CODE) {
-        player.relics++;
-        const maxValue = 10;
-        player.xp += Math.round(Math.random() * maxValue);
-        removeObjFromMap(x, y);
-        checkForWin();
-    }
-    let {x: oldX,y: oldY} = player.coords;
-    // update player position
-    updatePlayerPosition(oldX, oldY, x, y);
-
-    updateStats();
-
-    let left = oldX - VISIBILITY - 1;
-    let top = oldY - VISIBILITY - 1;
-    let right = x + VISIBILITY + 2;
-    let bot = y + VISIBILITY + 2;
-
-    drawMap(left, top, right, bot);
-}
-
-/**
- *  Enemy logic
- */ 
-function checkEnemy() {
-
-    const matching_coords = (enemy) => {
-        return enemy.coords.x == x && enemy.coords.y == y;
-    }
-
-    let enemy = game.enemies.find(matching_coords);
-
-    if (enemy) {
-        fightEnemy(enemy);
-    }
-
-}
-function fightEnemy(enemy) {
-    if (player.health - enemy.damage <= 0) {
-        gameOver();
-        return;
-    }
-    if (enemy.health - player.weapon.damage <= 0) {
-        enemyDefeated(enemy);
-    } else {
-        enemy.health -= player.weapon.damage;
-    }
-    player.health -= enemy.damage;
-    updateStats();
-}
-
-function enemyDefeated(enemy) {
-
-    // remove enemy from  2D array
-    removeObjFromMap(enemy.coords.x, enemy.coords.y);
-
-    let left = enemy.coords.x - 1;
-    let top = enemy.coords.y - 1
-    let right = enemy.coords.x + 1;
-    let bot = enemy.coords.y + 1;
-    // remove ane enemy from the visible map.
-    drawMap(left, top, right, bot);
-
-    // add experience points
-    player.xp += Math.round((enemy.damage + enemy.health) / 2);
-
-    // calculate the level in points. Level 1 has no experience so machine-wise it is level 0.
-    let level_in_points = POINTS_PER_LEVEL * (player.level - 1)
-
-    // level up if needed.
-    if (player.xp - level_in_points >= POINTS_PER_LEVEL) {
-
-        player.level++;
-    }
-
-    // remove enemy from enemies array
-    let e_idx = game.enemies.indexOf(enemy);
-
-    // remove enemy from array
-    game.enemies.splice(e_idx, 1);
-
-    // update stats
-    updateStats();
-
-    checkForWin();
-
-    // if no enemies, user wins
-
-}
-
-
 function checkForWin() {
 
     if (game.enemies.length == 0 &&
@@ -814,10 +557,6 @@ function checkForWin() {
         userWins();
     }
 }
-
-
-
-
 function userWins() {
     alert("YOU CONQUERED THE DUNGEON!");
     game.reset();
@@ -941,4 +680,89 @@ function updatePlayerPosition(oldX, oldY, newX, newY) {
             }
         }
     }
+}
+
+/**
+ * Code we will change
+ */ 
+function checkDirection(e) {
+    // prevent the default action (scroll / move caret)
+ 
+
+    let {x, y} = player.coords;
+
+    switch (e.which) {
+        case 37: // left
+            x--;
+            break;
+        case 38: // up
+            y--;
+            break;
+        case 39: // right
+            x++;
+            break;
+        case 40: // down
+            y++;
+            break;
+        default:
+            return;
+    }
+    if (game.map[y][x] == ENEMY_CODE) {
+
+        checkEnemy(x, y);
+
+    } else if (game.map[y][x] != WALL_CODE) {
+
+        movePlayer(x, y);
+    }
+    e.preventDefault();
+}
+
+function movePlayer(x,y) {
+    // if next spot is potion
+    if (game.map[y][x] == POTION_CODE) {
+
+        player.health += pickRandom(POTIONS);
+
+        removeObjFromMap(x, y);
+        generateItems(1, POTION_CODE);
+        // if next spot is weapon
+    } else if (game.map[y][x] == WEAPON_CODE) {
+
+        player.weapon = pickRandom(WEAPONS);
+
+        removeObjFromMap(x, y);
+        generateItems(1, WEAPON_CODE);
+    } else if (game.map[y][x] == RELIC_CODE) {
+        player.relics++;
+        const maxValue = 10;
+        player.xp += Math.round(Math.random() * maxValue);
+        removeObjFromMap(x, y);
+        checkForWin();
+    }
+    let {x: oldX,y: oldY} = player.coords;
+    // update player position
+    updatePlayerPosition(oldX, oldY, x, y);
+
+    updateStats();
+
+    let left = oldX - VISIBILITY - 1;
+    let top = oldY - VISIBILITY - 1;
+    let right = x + VISIBILITY + 2;
+    let bot = y + VISIBILITY + 2;
+
+    drawMap(left, top, right, bot);
+}
+/**
+ * @param {Number} x
+ * @param {Number} y
+ * @param {String} color
+ */
+function drawObject(x, y, color) {
+
+    //  game.context.clearRect(x * 10, y * 10, 10, 10);
+    game.context.beginPath();
+    game.context.rect(x * TILE_DIM, y * TILE_DIM, TILE_DIM, TILE_DIM);
+    game.context.fillStyle = color;
+    game.context.fill();
 }
