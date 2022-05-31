@@ -345,43 +345,7 @@ function addRoom(coords, baseDim, additional, roomType) {
 
 }
 
-/**
- * Generates a series of map rooms
- * 
- */
 
-
-function generateMapRooms() {
-
-    game.resetMap();
-
-    let maxSeqLen = 30;
-
-    for (var i = 0; i < maxSeqLen; ++i) {
-        addRoom();
-    }
-    let success = false;
-
-    const min = 3;
-
-    for (var room of game.rooms) {
-
-        success = room.findFacingRooms(min);
-
-        // make diagonal-only? 
-        success = room.nearestNeighbor();
-
-    }
-    for (var myRoom of game.rooms) {
-
-        let {
-            numConnected,
-            numDisc
-        } = myRoom.connectRemaining();
-
-        console.log(`Room${room.id} conected ${numConnected} out of ${numDisc} disconnected rooms`);
-    }
-}
 
 function printNeighbors() {
     for (var room of game.rooms) {
