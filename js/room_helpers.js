@@ -117,16 +117,12 @@ function addRoom(coords, baseDim, additional, roomType) {
         }
 
     }
-
     game.curRoomId++;
     game.roomToMap(room);
     game.rooms.push(room);
     return room;
 
 }
-
-
-
 function printNeighbors() {
     for (var room of game.rooms) {
         let ids = room.neighbors.map(x => x.id);

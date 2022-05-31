@@ -397,10 +397,7 @@ function checkDirection(e) {
     // prevent the default action (scroll / move caret)
     e.preventDefault();
 
-    let {
-        x,
-        y
-    } = player.coords;
+    let {x,y} = player.coords;
 
     let offset = {
         x: 0,

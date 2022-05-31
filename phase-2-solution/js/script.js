@@ -92,6 +92,10 @@ class Player {
         this.xp = xp;
     }
 }
+
+
+
+
 /**
  * Constants
  */
@@ -187,7 +191,6 @@ function init() {
     game.context = game.canvas.getContext("2d");
     startGame();
     document.addEventListener('keydown', checkDirection);
-
 }
 init();
 
@@ -212,6 +215,8 @@ function startGame() {
 
     }
 }
+
+
 
 /**
  * @param {Number} quantity - the number of items to generate
@@ -266,6 +271,7 @@ function updateStats() {
             key: 'damage'
         }
     ];
+
     for (var prop of weapon_props) {
 
         let {
@@ -353,7 +359,9 @@ function pickRandom(arr) {
     return arr[idx];
 }
 
+
 function generatePlayer() {
+
     let coords = {
         x: COLS / 2,
         y: ROWS / 2
@@ -372,38 +380,6 @@ function addObjToMap(coords, tileCode) {
     game.map[coords.y][coords.x] = tileCode;
 }
 
-function drawOffsetRegion() {
-    let color = (game.isShadowToggled) ? '#000' : TILE_COLORS[0];
-    let w = Math.abs(game.offset.x),
-        h = Math.abs(game.offset.y);
-
-    let start = {
-        x: 0,
-        y: 0
-    };
-
-
-    if (game.offset.x < 0) {
-        start.x = COLS + game.offset.x
-    }
-
-    if (game.offset.y < 0) {
-        start.y = ROWS + game.offset.y
-    }
-
-    game.context.beginPath();
-    // vert stripe
-    game.context.rect(start.x * TILE_DIM, 0, w * TILE_DIM, ROWS * TILE_DIM);
-    game.context.fill();
-    game.context.fillStyle = color;
-    game.context.beginPath();
-    // horiz stripe
-    game.context.rect(0, start.y * TILE_DIM, COLS * TILE_DIM, h * TILE_DIM);
-    game.context.fillStyle = color;
-    game.context.fill();
-
-
-}
 /**
  * @param {Number} x
  * @param {Number} y
@@ -421,53 +397,37 @@ function drawObject(x, y, color) {
     game.context.fill();
 }
 
-
-// key down events
-
 function checkDirection(e) {
     // prevent the default action (scroll / move caret)
     e.preventDefault();
 
-    let {
-        x,
-        y
-    } = player.coords;
+    let {x,y} = player.coords;
 
     let offset = {
         x: 0,
         y: 0
     };
-    let absPos = {
-        x: x + game.offset.x,
-        y: y + game.offset.y
-    };
+
     switch (e.which) {
         case 37: // left
             x--;
-            if (absPos.x < (COLS - STATIC_DIM.x) / 2) {
-                offset.x = 1;
-            }
+            offset.x = 1;
             break;
         case 38: // up
             y--;
-            if (absPos.y < (ROWS - STATIC_DIM.y) / 2) {
-                offset.y = 1;
-            }
+            offset.y = 1;
             break;
         case 39: // right
             x++;
-            if (absPos.x > (COLS + STATIC_DIM.x) / 2) {
-                offset.x = -1;
-            }
+            offset.x = -1;
             break;
         case 40: // down
             y++;
-            if (absPos.y > (ROWS + STATIC_DIM.y) / 2) {
-                offset.y = -1;
-            }
+            offset.y = -1;
             break;
         default:
             return; // exit this handler for other keys
+            break;
     }
     if (game.map[y][x] == ENEMY_CODE) {
 
@@ -478,11 +438,11 @@ function checkDirection(e) {
         game.offset.y += offset.y;
         game.offset.x += offset.x;
 
-        movePlayer(x, y, offset);
+        movePlayer(x, y);
     }
 }
 
-function movePlayer(x, y, offset) {
+function movePlayer(x, y) {
     // if next spot is potion
     if (game.map[y][x] == POTION_CODE) {
 
@@ -513,19 +473,14 @@ function movePlayer(x, y, offset) {
 
     updateStats();
 
-    if (offset.x != 0 || offset.y != 0) {
-        drawMap(0, 0, COLS, ROWS);
-        drawOffsetRegion();
-    } else {
-        let left = oldX - VISIBILITY - 1;
-        let top = oldY - VISIBILITY - 1;
-        let right = x + VISIBILITY + 2;
-        let bot = y + VISIBILITY + 2;
-        drawMap(left, top, right, bot);
-    }
+    /*let left = oldX - VISIBILITY - 1;
+    let top = oldY - VISIBILITY - 1;
+    let right = x + VISIBILITY + 2;
+    let bot = y + VISIBILITY + 2;*/
+
+    drawMap(0, 0, COLS, ROWS);
+    drawOffsetRegion();
 }
-
-
 
 function checkForWin() {
 
@@ -534,10 +489,6 @@ function checkForWin() {
         userWins();
     }
 }
-
-
-
-
 function userWins() {
     alert("YOU CONQUERED THE DUNGEON!");
     game.reset();
@@ -661,4 +612,36 @@ function updatePlayerPosition(oldX, oldY, newX, newY) {
             }
         }
     }
+}
+function drawOffsetRegion() {
+    let color = (game.isShadowToggled) ? '#000' : TILE_COLORS[0];
+    let w = Math.abs(game.offset.x),
+        h = Math.abs(game.offset.y);
+
+    let start = {
+        x: 0,
+        y: 0
+    };
+
+
+    if (game.offset.x < 0) {
+        start.x = COLS + game.offset.x
+    }
+
+    if (game.offset.y < 0) {
+        start.y = ROWS + game.offset.y
+    }
+
+    game.context.beginPath();
+    // vert stripe
+    game.context.rect(start.x * TILE_DIM, 0, w * TILE_DIM, ROWS * TILE_DIM);
+    game.context.fill();
+    game.context.fillStyle = color;
+    game.context.beginPath();
+    // horiz stripe
+    game.context.rect(0, start.y * TILE_DIM, COLS * TILE_DIM, h * TILE_DIM);
+    game.context.fillStyle = color;
+    game.context.fill();
+
+
 }
