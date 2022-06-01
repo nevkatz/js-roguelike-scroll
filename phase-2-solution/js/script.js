@@ -614,33 +614,63 @@ function updatePlayerPosition(oldX, oldY, newX, newY) {
     }
 }
 function drawOffsetRegion() {
-    let color = (game.isShadowToggled) ? '#000' : TILE_COLORS[0];
-    let w = Math.abs(game.offset.x),
-        h = Math.abs(game.offset.y);
+   let shadowColor = '#000', wallColor = TILE_COLORS[WALL_CODE];
+   
+   let color = (game.isShadowToggled) ? shadowColor : wallColor;
 
-    let start = {
+   game.context.fillStyle = color;
+   let w = Math.abs(game.offset.x);
+   
+   let h = Math.abs(game.offset.y);
+
+   let regionStart = {
         x: 0,
         y: 0
     };
 
-
+    // for vert region
     if (game.offset.x < 0) {
-        start.x = COLS + game.offset.x
+        regionStart.x = COLS + game.offset.x
     }
-
+    // for horiz region
     if (game.offset.y < 0) {
-        start.y = ROWS + game.offset.y
+        regionStart.y = ROWS + game.offset.y
     }
 
     game.context.beginPath();
-    // vert stripe
-    game.context.rect(start.x * TILE_DIM, 0, w * TILE_DIM, ROWS * TILE_DIM);
-    game.context.fill();
-    game.context.fillStyle = color;
-    game.context.beginPath();
-    // horiz stripe
-    game.context.rect(0, start.y * TILE_DIM, COLS * TILE_DIM, h * TILE_DIM);
-    game.context.fillStyle = color;
+    
+    // vertical region
+    let upperLeft = {
+        x:regionStart.x * TILE_DIM,
+        y:0
+    };
+
+    let dim = {
+        width:w*TILE_DIM,
+        height:ROWS*TILE_DIM
+    }
+
+    game.context.rect(upperLeft.x, 
+                      upperLeft.y, 
+                      dim.width,
+                      dim.height);
+    
+    // horiz region
+    upperLeft = {
+        x:0,
+        y:regionStart.y * TILE_DIM
+    };
+    // defining variables for clarity so the code speaks for itself.
+    dim = {
+        width: COLS*TILE_DIM,
+        height: h * TILE_DIM
+    };
+
+    game.context.rect(upperLeft.x, 
+                      upperLeft.y, 
+                      dim.width,
+                      dim.height);
+
     game.context.fill();
 
 
