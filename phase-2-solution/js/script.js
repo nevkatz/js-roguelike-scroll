@@ -432,10 +432,7 @@ function movePlayer(x, y) {
         removeObjFromMap(x, y);
         checkForWin();
     }
-    let {
-        x: oldX,
-        y: oldY
-    } = player.coords;
+    let { x: oldX,y: oldY} = player.coords;
     // update player position
     updatePlayerPosition(oldX, oldY, x, y);
 

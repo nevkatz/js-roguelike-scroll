@@ -237,7 +237,7 @@ function generateItems(quantity, tileCode) {
 function placeItem(coords,tileCode) {
    
    addObjToMap(coords, tileCode);
-   console.log('tileCode: ' + tileCode);
+
    if (tileCode == PLAYER_CODE || 
        !game.isShadowToggled ||
         game.shadow[coords.y][coords.x] == VISIBLE_CODE) {
@@ -305,7 +305,7 @@ function updateStats() {
  * 
  */
 function drawMap(startX, startY, endX, endY) {
-   console.log('drawing map');
+
    // loop through all cells of the map
    for (var row = startY; row < endY; row++) {
 
@@ -649,8 +649,6 @@ function centerPlayer() {
    game.offset.x = -1*coords.x + WIDTH/2;
 
    game.offset.y = -1*coords.y + HEIGHT/2;
-
-   console.log(game.offset);
 
 }
 function drawOffsetRegion() {

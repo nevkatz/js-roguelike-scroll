@@ -420,11 +420,9 @@ function checkDirection(e) {
             return;
     }
     if (game.map[y][x] == ENEMY_CODE) {
-
         checkEnemy(x, y);
 
     } else if (game.map[y][x] != WALL_CODE) {
-
         movePlayer(x, y);
     }
     e.preventDefault();
@@ -453,9 +451,8 @@ function movePlayer(x,y) {
         checkForWin();
     }
     let {x: oldX,y: oldY} = player.coords;
-    // update player position
-    updatePlayerPosition(oldX, oldY, x, y);
 
+    updatePlayerPosition(oldX, oldY, x, y);
     updateStats();
 
     let left = oldX - VISIBILITY - 1;
