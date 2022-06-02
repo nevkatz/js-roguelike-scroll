@@ -39,7 +39,7 @@ const ENEMIES_DAMAGE = [30, 30, 30, 30, 40, 40, 60, 80];
 const POINTS_PER_LEVEL = 100;
 
 // the visible area
-const VISIBILITY = 3;
+const VISIBILITY = 0;
 
 const TOTAL_ENEMIES = 15;
 const STARTING_POTIONS_AMOUNT = 10;
@@ -452,11 +452,12 @@ function movePlayer(x, y, offset) {
     if (offset.x != 0 || offset.y != 0) {
         drawMap(0, 0, COLS, ROWS);
     } else {
-        let left = oldX - VISIBILITY - 1;
-        let top = oldY - VISIBILITY - 1;
-        let right = x + VISIBILITY + 2;
-        let bot = y + VISIBILITY + 2;
+        let left = oldX - 1;
+        let top = oldY - 1;
+        let right = x + 2;
+        let bot = y + 2;
         drawMap(left, top, right, bot);
+
     }
 }
 
@@ -469,10 +470,6 @@ function checkForWin() {
         userWins();
     }
 }
-
-
-
-
 function userWins() {
     alert("YOU CONQUERED THE DUNGEON!");
     game.reset();

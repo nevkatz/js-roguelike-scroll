@@ -402,7 +402,6 @@ function checkDirection(e) {
             break;
     }
     if (game.map[y][x] == ENEMY_CODE) {
-
         checkEnemy(x, y);
 
     } else if (game.map[y][x] != WALL_CODE) {

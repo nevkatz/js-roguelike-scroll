@@ -41,7 +41,6 @@ const ENEMIES_DAMAGE = [30, 30, 30, 30, 40, 40, 60, 80];
 
 const POINTS_PER_LEVEL = 100;
 
-const VISIBILITY = 3;
 const TOTAL_ENEMIES = 15;
 const STARTING_POTIONS_AMOUNT = 10;
 const STARTING_WEAPONS_AMOUNT = 10;
@@ -360,24 +359,12 @@ function drawObject(x, y, color) {
    game.context.fillStyle = color;
    game.context.fill();
 }
-
-
-
-
-
-
 function checkForWin() {
-
    if (game.enemies.length == 0 && 
       game.itemsLeft(RELIC_CODE)==0) {
       userWins();
    }
 }
-
-
-
-
-
 function userWins() {
    alert("YOU CONQUERED THE DUNGEON!");
    game.reset();
@@ -389,15 +376,10 @@ function gameOver() {
    game.reset();
    startGame();
 };
-
 function removeObjFromMap(x, y) {
    // make this a floor coordinate
    game.map[y][x] = FLOOR_CODE;
 };
-
-
-
-
 /**
  * Removes old player square from map
  * Adds new square
@@ -512,10 +494,10 @@ function movePlayer(x, y, offset) {
         drawMap(0, 0, COLS, ROWS);
         
     } else {
-        let left = oldX - VISIBILITY - 1;
-        let top = oldY - VISIBILITY - 1;
-        let right = x + VISIBILITY + 2;
-        let bot = y + VISIBILITY + 2;
+        let left = oldX - 1;
+        let top = oldY - 1;
+        let right = x + 2;
+        let bot = y + 2;
         drawMap(left, top, right, bot);
     }
 }

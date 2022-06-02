@@ -82,21 +82,6 @@ class Player {
 }
 
 /**
- * Creates a new enemy. 
- * @class
- * 
- * @property {Number} health
- * @property {Object} coords
- * @property {Number} damage
- */
-class Enemy {
-    constructor(health, coords, damage) {
-        this.health = health;
-        this.coords = coords;
-        this.damage = damage;
-    }
-}
-/**
  * Constants
  */
 const WEAPONS = [{
@@ -385,7 +370,6 @@ function generatePlayer() {
 function updatePlayerPosition(oldX, oldY, newX, newY) {
     removeObjFromMap(oldX, oldY);
 
-    // set this as the player
     game.map[newY][newX] = PLAYER_CODE;
 
     player.coords = {
@@ -398,8 +382,6 @@ function updatePlayerPosition(oldX, oldY, newX, newY) {
  * Code we will change
  */ 
 function checkDirection(e) {
-    // prevent the default action (scroll / move caret)
- 
 
     let {x, y} = player.coords;
 
@@ -455,10 +437,10 @@ function movePlayer(x,y) {
     updatePlayerPosition(oldX, oldY, x, y);
     updateStats();
 
-    let left = oldX - VISIBILITY - 1;
-    let top = oldY - VISIBILITY - 1;
-    let right = x + VISIBILITY + 2;
-    let bot = y + VISIBILITY + 2;
+     let left = oldX - 1;
+     let top = oldY - 1;
+     let right = x + 2;
+     let bot = y + 2;
 
     drawMap(left, top, right, bot);
 }
