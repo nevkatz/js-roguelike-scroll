@@ -684,13 +684,9 @@ function drawOffsetRegion() {
     }
     const drawRegion = (region) => {
         let x = region.x * TILE_DIM;
-
         let y = region.y * TILE_DIM;
-
         let w = region.width * TILE_DIM;
-
         let h = region.height * TILE_DIM;
-
         game.context.rect(x, y, w, h);
     };
 

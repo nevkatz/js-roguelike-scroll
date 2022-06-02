@@ -22,8 +22,6 @@ const STATIC_DIM = {
 const DEBUG = true;
 const OUTER_LIMIT = 3;
 
-const SHADOW_CODE = 0;
-const VISIBLE_CODE = 1;
 
 const WALL_CODE = 0;
 const FLOOR_CODE = 1;
@@ -42,9 +40,6 @@ const ENEMIES_HEALTH = [30, 30, 30, 30, 40, 40, 60, 80];
 const ENEMIES_DAMAGE = [30, 30, 30, 30, 40, 40, 60, 80];
 
 const POINTS_PER_LEVEL = 100;
-
-// the visible area
-const VISIBILITY = 3;
 
 const TOTAL_ENEMIES = 15;
 const STARTING_POTIONS_AMOUNT = 10;
