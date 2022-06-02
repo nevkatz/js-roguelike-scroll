@@ -380,25 +380,29 @@ function checkDirection(e) {
     switch (e.which) {
         case 37: // left
             x--;
-            if (absPos.x < (COLS - STATIC_DIM.x) / 2) {
+            let leftBounds = (COLS - STATIC_DIM.x) / 2;
+            if (absPos.x < leftBounds) {
                 offset.x = 1;
             }
             break;
         case 38: // up
             y--;
-            if (absPos.y < (ROWS - STATIC_DIM.y) / 2) {
+            let upperBounds = (ROWS - STATIC_DIM.y) / 2;
+            if (absPos.y <upperBounds) {
                 offset.y = 1;
             }
             break;
         case 39: // right
             x++;
-            if (absPos.x > (COLS + STATIC_DIM.x) / 2) {
+            let rightBounds = (COLS + STATIC_DIM.x) / 2;
+            if (absPos.x > rightBounds) {
                 offset.x = -1;
             }
             break;
         case 40: // down
             y++;
-            if (absPos.y > (ROWS + STATIC_DIM.y) / 2) {
+            let lowerBounds =  (ROWS + STATIC_DIM.y) / 2;
+            if (absPos.y > lowerBounds) {
                 offset.y = -1;
             }
             break;
