@@ -38,6 +38,7 @@ const ENEMIES_DAMAGE = [30, 30, 30, 30, 40, 40, 60, 80];
 
 const POINTS_PER_LEVEL = 100;
 
+// the visible area
 const VISIBILITY = 3;
 
 const TOTAL_ENEMIES = 15;
@@ -88,10 +89,6 @@ class Player {
         this.xp = xp;
     }
 }
-
-
-
-
 /**
  * Constants
  */
@@ -148,13 +145,12 @@ function createDOM() {
     let canvas = document.createElement('canvas');
     canvas.id = 'grid';
 
-
-
     canvas.height = ROWS * TILE_DIM;
     canvas.width = COLS * TILE_DIM;
 
     container.appendChild(canvas);
 }
+
 
 /**
  *  HTML5 Canvas
@@ -169,6 +165,7 @@ function init() {
     game.context = game.canvas.getContext("2d");
     startGame();
     document.addEventListener('keydown', checkDirection);
+
 }
 init();
 
@@ -193,8 +190,6 @@ function startGame() {
     }
 }
 
-
-
 /**
  * @param {Number} quantity - the number of items to generate
  * @param {Number} tileCode - corresponds to a constant, such as POTION_CODE.
@@ -212,7 +207,6 @@ function generateItems(quantity, tileCode) {
 function placeItem(coords, tileCode) {
 
     addObjToMap(coords, tileCode);
-
     let color = TILE_COLORS[tileCode];
     drawObject(coords.x, coords.y, color);
     
@@ -246,7 +240,6 @@ function updateStats() {
             key: 'damage'
         }
     ];
-
     for (var prop of weapon_props) {
 
         let {
@@ -285,11 +278,11 @@ function drawMap(startX, startY, endX, endY) {
 
             let color = null;
 
-             let c_idx = game.map[row][col];
+            let c_idx = game.map[row][col];
 
-             color = TILE_COLORS[c_idx];
+            color = TILE_COLORS[c_idx];
             
-             drawObject(col, row, color);
+            drawObject(col, row, color);
 
         } // end loop
     }
@@ -327,9 +320,7 @@ function pickRandom(arr) {
     return arr[idx];
 }
 
-
 function generatePlayer() {
-
     let coords = {
         x: COLS / 2,
         y: ROWS / 2
@@ -348,6 +339,7 @@ function addObjToMap(coords, tileCode) {
     game.map[coords.y][coords.x] = tileCode;
 }
 
+
 /**
  * @param {Number} x
  * @param {Number} y
@@ -365,37 +357,53 @@ function drawObject(x, y, color) {
     game.context.fill();
 }
 
+
+// key down events
+
 function checkDirection(e) {
     // prevent the default action (scroll / move caret)
     e.preventDefault();
 
-    let {x,y} = player.coords;
+    let {
+        x,
+        y
+    } = player.coords;
 
     let offset = {
         x: 0,
         y: 0
     };
-
+    let absPos = {
+        x: x + game.offset.x,
+        y: y + game.offset.y
+    };
     switch (e.which) {
         case 37: // left
             x--;
-            offset.x = 1;
+            if (absPos.x < (COLS - STATIC_DIM.x) / 2) {
+                offset.x = 1;
+            }
             break;
         case 38: // up
             y--;
-            offset.y = 1;
+            if (absPos.y < (ROWS - STATIC_DIM.y) / 2) {
+                offset.y = 1;
+            }
             break;
         case 39: // right
             x++;
-            offset.x = -1;
+            if (absPos.x > (COLS + STATIC_DIM.x) / 2) {
+                offset.x = -1;
+            }
             break;
         case 40: // down
             y++;
-            offset.y = -1;
+            if (absPos.y > (ROWS + STATIC_DIM.y) / 2) {
+                offset.y = -1;
+            }
             break;
         default:
             return; // exit this handler for other keys
-            break;
     }
     if (game.map[y][x] == ENEMY_CODE) {
 
@@ -406,11 +414,11 @@ function checkDirection(e) {
         game.offset.y += offset.y;
         game.offset.x += offset.x;
 
-        movePlayer(x, y);
+        movePlayer(x, y, offset);
     }
 }
 
-function movePlayer(x, y) {
+function movePlayer(x, y, offset) {
     // if next spot is potion
     if (game.map[y][x] == POTION_CODE) {
 
@@ -432,19 +440,27 @@ function movePlayer(x, y) {
         removeObjFromMap(x, y);
         checkForWin();
     }
-    let { x: oldX,y: oldY} = player.coords;
+    let {
+        x: oldX,
+        y: oldY
+    } = player.coords;
     // update player position
     updatePlayerPosition(oldX, oldY, x, y);
 
     updateStats();
 
-    /*let left = oldX - VISIBILITY - 1;
-    let top = oldY - VISIBILITY - 1;
-    let right = x + VISIBILITY + 2;
-    let bot = y + VISIBILITY + 2;*/
-
-    drawMap(0, 0, COLS, ROWS);
+    if (offset.x != 0 || offset.y != 0) {
+        drawMap(0, 0, COLS, ROWS);
+    } else {
+        let left = oldX - VISIBILITY - 1;
+        let top = oldY - VISIBILITY - 1;
+        let right = x + VISIBILITY + 2;
+        let bot = y + VISIBILITY + 2;
+        drawMap(left, top, right, bot);
+    }
 }
+
+
 
 function checkForWin() {
 
@@ -453,6 +469,10 @@ function checkForWin() {
         userWins();
     }
 }
+
+
+
+
 function userWins() {
     alert("YOU CONQUERED THE DUNGEON!");
     game.reset();
@@ -470,11 +490,9 @@ function removeObjFromMap(x, y) {
     game.map[y][x] = FLOOR_CODE;
 };
 
-
 /**
  * Removes old player square from map
  * Adds new square
- * resets shadow
  * @param {Number} oldX
  * @param {Number} oldY
  * @param {Number} newX
