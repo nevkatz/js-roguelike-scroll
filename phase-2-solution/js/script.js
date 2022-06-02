@@ -38,6 +38,8 @@ const ENEMIES_DAMAGE = [30, 30, 30, 30, 40, 40, 60, 80];
 
 const POINTS_PER_LEVEL = 100;
 
+const VISIBILITY = 3;
+
 const TOTAL_ENEMIES = 15;
 const STARTING_POTIONS_AMOUNT = 10;
 const STARTING_WEAPONS_AMOUNT = 10;
@@ -445,7 +447,6 @@ function movePlayer(x, y) {
     let bot = y + VISIBILITY + 2;*/
 
     drawMap(0, 0, COLS, ROWS);
-    drawOffsetRegion();
 }
 
 function checkForWin() {
