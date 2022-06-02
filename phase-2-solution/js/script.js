@@ -619,58 +619,44 @@ function drawOffsetRegion() {
    let color = (game.isShadowToggled) ? shadowColor : wallColor;
 
    game.context.fillStyle = color;
-   let w = Math.abs(game.offset.x);
-   
-   let h = Math.abs(game.offset.y);
 
-   let regionStart = {
-        x: 0,
-        y: 0
-    };
+   let vertRegion = {
+     x:0,
+     y:0,
+     width: Math.abs(game.offset.x),
+     height: ROWS 
+   }
+       // for vert region
+   if (game.offset.x < 0) {
+        vertRegion.x = COLS - vertRegion.width
+   }
 
-    // for vert region
-    if (game.offset.x < 0) {
-        regionStart.x = COLS + game.offset.x
-    }
+   let horizRegion = {
+    x:0,
+    y:0,
+    width: COLS,
+    height: Math.abs(game.offset.y)
+   }
+
     // for horiz region
     if (game.offset.y < 0) {
-        regionStart.y = ROWS + game.offset.y
+        horizRegion.y = ROWS - horizRegion.height
     }
+    const drawRegion = (region) => {
+        let x = region.x * TILE_DIM;
+
+        let y = region.y * TILE_DIM;
+
+        let w = region.width * TILE_DIM;
+
+        let h = region.height * TILE_DIM;
+
+        game.context.rect(x, y, w, h);
+    };
 
     game.context.beginPath();
-    
-    // vertical region
-    let upperLeft = {
-        x:regionStart.x * TILE_DIM,
-        y:0
-    };
-
-    let dim = {
-        width:w*TILE_DIM,
-        height:ROWS*TILE_DIM
-    }
-
-    game.context.rect(upperLeft.x, 
-                      upperLeft.y, 
-                      dim.width,
-                      dim.height);
-    
-    // horiz region
-    upperLeft = {
-        x:0,
-        y:regionStart.y * TILE_DIM
-    };
-    // defining variables for clarity so the code speaks for itself.
-    dim = {
-        width: COLS*TILE_DIM,
-        height: h * TILE_DIM
-    };
-
-    game.context.rect(upperLeft.x, 
-                      upperLeft.y, 
-                      dim.width,
-                      dim.height);
-
+    drawRegion(vertRegion);
+    drawRegion(horizRegion);
     game.context.fill();
 
 
