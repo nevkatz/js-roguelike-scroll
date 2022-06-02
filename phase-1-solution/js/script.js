@@ -444,11 +444,17 @@ function movePlayer(x, y) {
 
     updateStats();
 
-    /*let left = oldX - VISIBILITY - 1;
-    let top = oldY - VISIBILITY - 1;
-    let right = x + VISIBILITY + 2;
-    let bot = y + VISIBILITY + 2;*/
-
+    /**
+     * @NOTE: this code is commented out just for this phase. 
+     * It will be used in an if-statement in phase 2. 
+     * 
+     * let left = oldX - 1;
+     * let top = oldY - 1;
+     * let right = x + 2;
+     * let bot = y + 2;
+     * drawMap(left, top, right, bot);
+     */ 
+     
     drawMap(0, 0, COLS, ROWS);
 }
 

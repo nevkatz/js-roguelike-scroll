@@ -8,6 +8,7 @@ const ROWS = 60;
 
 const WIDTH = 50;
 const HEIGHT = 30;
+
 const TILE_DIM = 10;
 
 const STATIC_DIM = {
@@ -421,25 +422,30 @@ function checkDirection(e) {
     switch (e.which) {
         case 37: // left
             x--;
-            if (absPos.x < (WIDTH - STATIC_DIM.x) / 2) {
+            let leftBounds = (WIDTH - STATIC_DIM.x) / 2;
+
+            if (absPos.x < leftBounds) {
                 offset.x = 1;
             }
             break;
         case 38: // up
             y--;
-            if (absPos.y < (HEIGHT - STATIC_DIM.y) / 2) {
+            let upperBounds = (HEIGHT - STATIC_DIM.y) / 2;
+            if (absPos.y < upperBounds) {
                 offset.y = 1;
             }
             break;
         case 39: // right
             x++;
-            if (absPos.x > (WIDTH + STATIC_DIM.x) / 2) {
+            let rightBounds = (WIDTH + STATIC_DIM.x) / 2;
+            if (absPos.x > rightBounds) {
                 offset.x = -1;
             }
             break;
         case 40: // down
             y++;
-            if (absPos.y > (HEIGHT + STATIC_DIM.y) / 2) {
+            let lowerBounds = (HEIGHT + STATIC_DIM.y) / 2;
+            if (absPos.y > lowerBounds) {
                 offset.y = -1;
             }
             break;
@@ -508,7 +514,5 @@ function centerPlayer() {
    game.offset.x = -1*coords.x + WIDTH/2;
 
    game.offset.y = -1*coords.y + HEIGHT/2;
-
-   console.log(game.offset);
 
 }

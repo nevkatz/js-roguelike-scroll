@@ -457,12 +457,8 @@ function movePlayer(x, y, offset) {
         let right = x + 2;
         let bot = y + 2;
         drawMap(left, top, right, bot);
-
     }
 }
-
-
-
 function checkForWin() {
 
     if (game.enemies.length == 0 &&

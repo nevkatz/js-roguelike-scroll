@@ -5,6 +5,12 @@
 // dimensions
 const COLS = 80;
 const ROWS = 60;
+
+/**
+ * @TODO: In Phase 3, 
+ *        add constants for width and height
+ *        of the visible map.
+ */ 
 const TILE_DIM = 10;
 
 const DEBUG = true;
@@ -53,8 +59,6 @@ const TILE_COLORS = [
     // relic
     '#a117f2'
 ];
-
-
 /**
  * Classes 
  */
@@ -80,7 +84,6 @@ class Player {
         this.xp = xp;
     }
 }
-
 /**
  * Constants
  */
@@ -101,9 +104,6 @@ const WEAPONS = [{
         damage: 100
     }
 ];
-
-// game object
-
 /**
  * 
  * @param {Sring} label - the visible label of the stat
@@ -117,7 +117,6 @@ function addStat(label, container) {
     container.appendChild(el);
     return container;
 }
-
 function createDOM() {
 
     let container = document.getElementById('container');
@@ -136,19 +135,11 @@ function createDOM() {
     // add canvas
     let canvas = document.createElement('canvas');
     canvas.id = 'grid';
-
-
-
     canvas.height = ROWS * TILE_DIM;
     canvas.width = COLS * TILE_DIM;
 
     container.appendChild(canvas);
-
-
 }
-
-
-
 /**
  *  HTML5 Canvas
  */
@@ -164,13 +155,9 @@ function init() {
     document.addEventListener('keydown', checkDirection);
 }
 init();
-
-
 /**
  * Start Game
  */
-
-
 function startGame() {
 
     let ready = sequentialRooms();
@@ -246,16 +233,10 @@ function updateStats() {
 
         el.textContent = player.weapon[key];
     }
-
-
     let stats = document.getElementById('enemies');
 
     stats.textContent = game.enemies.length;
-
-
 }
-
-
 /**
  *
  * @param {Number} startX
@@ -280,11 +261,9 @@ function drawMap(startX, startY, endX, endY) {
         } // end loop
     }
 }
-
 /**
  * Coordinate Helper Functions
  */
-
 function generateValidCoords() {
 
     var x = null,
@@ -312,7 +291,6 @@ function pickRandom(arr) {
 
     return arr[idx];
 }
-
 
 // add given coords to map 
 // make the coords and neighbors busy
@@ -343,9 +321,6 @@ function removeObjFromMap(x, y) {
     // make this a floor coordinate
     game.map[y][x] = FLOOR_CODE;
 };
-
-
-
 function generatePlayer() {
 
     let coords = {
@@ -358,7 +333,6 @@ function generatePlayer() {
 
     addObjToMap(player.coords, PLAYER_CODE);
 }
-
 /**
  * Removes old player square from map
  * Adds new square
@@ -377,9 +351,17 @@ function updatePlayerPosition(oldX, oldY, newX, newY) {
         y: newY
     };
 }
-
 /**
  * Code we will change
+ * @TODO: Add logic for scrolling.
+ * 
+ *        In Phase 1, scroll all the time and keep the player
+ *        in the center.
+ * 
+ *        In Phase 2, make it conditional upon how far away
+ *        the player is from the center.
+ * 
+ *        In Phase 3, check visible screen rather than entire map.
  */ 
 function checkDirection(e) {
 
@@ -405,11 +387,17 @@ function checkDirection(e) {
         checkEnemy(x, y);
 
     } else if (game.map[y][x] != WALL_CODE) {
+        /**
+         * @TODO: Pass in offset as a third parameter.
+         */ 
         movePlayer(x, y);
     }
     e.preventDefault();
 }
 
+/**
+ * @TODO: In Phase 2, add argument for offset.
+ */ 
 function movePlayer(x,y) {
     // if next spot is potion
     if (game.map[y][x] == POTION_CODE) {
@@ -437,6 +425,9 @@ function movePlayer(x,y) {
     updatePlayerPosition(oldX, oldY, x, y);
     updateStats();
 
+    /**
+     * @TODO: If scrolling, draw the entire map. 
+     */ 
      let left = oldX - 1;
      let top = oldY - 1;
      let right = x + 2;
@@ -450,7 +441,9 @@ function movePlayer(x,y) {
  * @param {String} color
  */
 function drawObject(x, y, color) {
-
+    /**
+     * @TODO: Modify x and y based on game.offset
+     */ 
     game.context.beginPath();
     game.context.rect(x * TILE_DIM, y * TILE_DIM, TILE_DIM, TILE_DIM);
     game.context.fillStyle = color;
