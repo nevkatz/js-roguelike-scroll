@@ -1,8 +1,7 @@
 /**
  * Function for showing the center box. Useful for testing.
- * If you use this, refer to it in your index.html file.
  * 
- * @param {Number} width - pass in COLS for phase 3, WIDTH for phase 3
+ * @param {Number} width - pass in COLS for phase 2, WIDTH for phase 3
  * @param {Number} height - pass in ROWS for phase 2, HEIGHT for phase 3
  */ 
 function centerBox(width, height) {
