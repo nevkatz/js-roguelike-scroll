@@ -16,12 +16,9 @@ class Game {
 
       this.map = [];
       this.shadow = [];
-
       this.isShadowToggled = false;
-
       this.enemies = [];
       this.canvas = null;
-
       this.context = null;
 
       this.relics = 0;

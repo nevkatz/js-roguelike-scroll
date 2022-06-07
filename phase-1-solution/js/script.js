@@ -7,10 +7,6 @@ const COLS = 80;
 const ROWS = 60;
 const TILE_DIM = 10;
 
-const STATIC_DIM = {
-    x: 20,
-    y: 20
-}
 /**
  * If abs player position.y is > 10 cols or < 70 rows 
  * If abs.player position.x is > 10 cols or < 50 rows
@@ -442,7 +438,7 @@ function movePlayer(x, y) {
     // update player position
     updatePlayerPosition(oldX, oldY, x, y);
 
-    updateStats();
+
 
     /**
      * @NOTE: this code is commented out just for this phase. 
@@ -454,8 +450,11 @@ function movePlayer(x, y) {
      * let bot = y + 2;
      * drawMap(left, top, right, bot);
      */ 
+
      
     drawMap(0, 0, COLS, ROWS);
+
+  updateStats();
 }
 
 function checkForWin() {

@@ -10,7 +10,7 @@ const WIDTH = 50;
 const HEIGHT = 30;
 const TILE_DIM = 10;
 
-const STATIC_DIM = {
+const CENTER_BOX = {
    x:12,
    y:12
 }
@@ -562,25 +562,25 @@ function checkDirection(e) {
     switch (e.which) {
         case 37: // left
             x--;
-            if (absPos.x < (WIDTH - STATIC_DIM.x) / 2) {
+            if (absPos.x < (WIDTH - CENTER_BOX.x) / 2) {
                 offset.x = 1;
             }
             break;
         case 38: // up
             y--;
-            if (absPos.y < (HEIGHT - STATIC_DIM.y) / 2) {
+            if (absPos.y < (HEIGHT - CENTER_BOX.y) / 2) {
                 offset.y = 1;
             }
             break;
         case 39: // right
             x++;
-            if (absPos.x > (WIDTH + STATIC_DIM.x) / 2) {
+            if (absPos.x > (WIDTH + CENTER_BOX.x) / 2) {
                 offset.x = -1;
             }
             break;
         case 40: // down
             y++;
-            if (absPos.y > (HEIGHT + STATIC_DIM.y) / 2) {
+            if (absPos.y > (HEIGHT + CENTER_BOX.y) / 2) {
                 offset.y = -1;
             }
             break;

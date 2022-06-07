@@ -382,6 +382,7 @@ function checkDirection(e) {
             break;
         default:
             return;
+            break;
     }
     if (game.map[y][x] == ENEMY_CODE) {
         checkEnemy(x, y);

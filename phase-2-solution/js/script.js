@@ -7,9 +7,9 @@ const COLS = 80;
 const ROWS = 60;
 const TILE_DIM = 10;
 
-const STATIC_DIM = {
-    x: 20,
-    y: 20
+const CENTER_BOX = {
+    x: 12,
+    y: 12
 }
 /**
  * If abs player position.y is > 10 cols or < 70 rows 
@@ -380,29 +380,29 @@ function checkDirection(e) {
     switch (e.which) {
         case 37: // left
             x--;
-            let leftBounds = (COLS - STATIC_DIM.x) / 2;
-            if (absPos.x < leftBounds) {
+            const leftBounds = (COLS - CENTER_BOX.x) / 2;
+            if (absPos.x <= leftBounds) {
                 offset.x = 1;
             }
             break;
         case 38: // up
             y--;
-            let upperBounds = (ROWS - STATIC_DIM.y) / 2;
-            if (absPos.y <upperBounds) {
+            const upperBounds = (ROWS - CENTER_BOX.y) / 2;
+            if (absPos.y <= upperBounds) {
                 offset.y = 1;
             }
             break;
         case 39: // right
             x++;
-            let rightBounds = (COLS + STATIC_DIM.x) / 2;
-            if (absPos.x > rightBounds) {
+            const rightBounds = (COLS + CENTER_BOX.x) / 2;
+            if (absPos.x >= rightBounds) {
                 offset.x = -1;
             }
             break;
         case 40: // down
             y++;
-            let lowerBounds =  (ROWS + STATIC_DIM.y) / 2;
-            if (absPos.y > lowerBounds) {
+            const lowerBounds =  (ROWS + CENTER_BOX.y) / 2;
+            if (absPos.y >= lowerBounds) {
                 offset.y = -1;
             }
             break;
