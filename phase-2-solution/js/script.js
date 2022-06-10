@@ -20,6 +20,9 @@ const DEBUG = true;
 
 const OUTER_LIMIT = 3;
 
+const SHADOW_CODE = 0;
+const VISIBLE_CODE = 1;
+
 const WALL_CODE = 0;
 const FLOOR_CODE = 1;
 const PLAYER_CODE = 2;
