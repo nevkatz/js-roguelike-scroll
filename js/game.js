@@ -14,14 +14,15 @@ class Game {
       this.rooms = [];
       this.curRoomId = 0;
 
-      this.map = [];
-      this.shadow = [];
-      this.isShadowToggled = false;
       this.enemies = [];
+      this.relics = 0;
+
+      this.isShadowToggled = false;
+      this.shadow = [];
+
+      this.map = [];
       this.canvas = null;
       this.context = null;
-
-      this.relics = 0;
 
       this.offset = {
          x:0,

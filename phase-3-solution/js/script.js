@@ -464,7 +464,6 @@ function checkDirection(e) {
         movePlayer(x, y, offset);
     }
 }
-
 function movePlayer(x, y, offset) {
     // if next spot is potion
     if (game.map[y][x] == POTION_CODE) {
