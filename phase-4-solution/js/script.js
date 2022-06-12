@@ -320,6 +320,7 @@ function drawMap(startX, startY, endX, endY) {
             color = '#000';
 
          } else {
+
             let c_idx = game.map[row][col];
 
             color = TILE_COLORS[c_idx];
@@ -635,10 +636,10 @@ function movePlayer(x, y, offset) {
         drawMap(0, 0, COLS, ROWS);
         drawOffsetRegion();
     } else {
-        let left = oldX - VISIBILITY - 1;
-        let top = oldY - VISIBILITY - 1;
-        let right = x + VISIBILITY + 2;
-        let bot = y + VISIBILITY + 2;
+        let left = Math.max(oldX - VISIBILITY - 1, 0);
+        let top = Math.max(oldY - VISIBILITY - 1, 0);
+        let right = Math.min(x + VISIBILITY + 2, COLS);
+        let bot = Math.min(y + VISIBILITY + 2, ROWS);
         drawMap(left, top, right, bot);
     }
 }
