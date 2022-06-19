@@ -15,7 +15,8 @@
   let el = document.querySelector('#container');
   let d = document.createDocumentFragment();
 
-  const addItem = (num, myDir, label)=> {
+  const addItem = (num, myDir, label) => {
+    console.log('add item...');
     let p = document.createElement('p');
     let a = document.createElement('a');
 
@@ -29,6 +30,7 @@
   for (var i = 1; i <= numPhases; ++i) {
       addItem(i);
   }
-  addItem(null, 'challenge-solution', 'Challenge Solution');
+  addItem(0, 'challenge-solution', 'Challenge Solution');
+  el.appendChild(d);
 </script>
 </html>
