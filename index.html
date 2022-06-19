@@ -15,20 +15,20 @@
   let el = document.querySelector('#container');
   let d = document.createDocumentFragment();
 
-  const addItem = (num)=> {
+  const addItem = (num, myDir, label)=> {
     let p = document.createElement('p');
     let a = document.createElement('a');
 
-    let dir = `phase-${num}-solution`;
+    let dir = myDir || `phase-${num}-solution`;
     a.href = `${dir}/index.html`;
-    a.innerHTML = `Phase ${num} Solution`;
+    a.innerHTML = label || `Phase ${num} Solution`;
     p.appendChild(a);
     d.appendChild(p);
   };
-  let numPhases = 4;
+  let numPhases = 3;
   for (var i = 1; i <= numPhases; ++i) {
       addItem(i);
   }
-  el.appendChild(d);
+  addItem(null, 'challenge-solution', 'Challenge Solution');
 </script>
 </html>
